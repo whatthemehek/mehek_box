@@ -107,23 +107,24 @@ class MyApp extends StatelessWidget {
 
 class MeasureBoxWidget extends StatefulWidget {
   @override
+  MeasureBoxWidget({Key key}) : super(key: key);
   _MBWidgetState createState() => _MBWidgetState();
+
 }
 class _MBWidgetState extends State<MeasureBoxWidget> {
   int _howFull = 0;
   int _maxFull = 16;
   @override
+  bool successfulDrop;
   Widget build(BuildContext context) {
-    return Container (
-      height: 40*n,
-      width: 100*n,
-      decoration: BoxDecoration(
-          color: Colors.white60,
-          border: Border.all(
-            color: Colors.white,
-            width: 2*n,
-          )
-      ),
+    return DragTarget<Color>(
+      builder: (BuildContext context, List<Color> incoming, List rejected) {
+        if (successfulDrop == true) {
+          return whole;
+        } else {
+          return half;
+        }
+      },
     );
   }
 }
