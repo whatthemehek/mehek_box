@@ -1,105 +1,129 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 final n = 3.0; // Scale factor for scroll blocks
 final whole = Container (
   width: 96*n,
+  height: 36*n,
   color: Colors.red,
 );
 
+final dotHalf = Container (
+  width: 72*n,
+  height: 36*n,
+  color: Colors.orange,
+);
+final half = Container (
+  width: 48*n,
+  height: 36*n,
+  color: Colors.yellow,
+);
+final dotQuarter = Container (
+  width: 36*n,
+  height: 36*n,
+  color: Colors.green,
+);
+final quarter = Container (
+  width: 24*n,
+  height: 36*n,
+  color: Colors.blue,
+);
 class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Measure Box',
+      title: 'Flutter Demo',
       theme: ThemeData(
         primaryColor: Colors.white,
       ),
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('Measure Box'),
-        ),
-        body: Column (
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 20.0),
-              height: 36*n,
-              child: Draggable<Color> ( // Whole
-                data: Colors.red,
-                child: whole,
-                feedback: whole,
-                childWhenDragging: whole,
-              ),
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  Draggable<Color> ( // Whole
-                    data: Colors.red,
-                    child: whole,
-                    feedback: whole,
-                    childWhenDragging: whole,
-                  ),
-                  Container( // Dot Half
-                    width: 72*n,
-                    color: Colors.orange,
-                  ),
-                  Container( // Half
-                    width: 48*n,
-                    color: Colors.yellow,
+          appBar: AppBar(
+            title: Text('Measure Box'),
+          ),
+          body: Column (
+              children: [
+                Container (
                     height: 36*n,
-                  ),
-                  Container( // Dot Quarter
-                    width: 36*n,
-                    color: Colors.green,
-                    height: 36*n,
-                  ),
-                  Container( // Quarter
-                    width: 24*n,
-                    color: Colors.blue,
-                    height: 36*n,
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Container (
-                color: Colors.grey,
-                child: Center (
-                  child: MeasureBox()
+                    child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          Draggable<Color> (
+                            data: Colors.red,
+                            child: whole,
+                            feedback: whole,
+                            childWhenDragging: whole,
+                            affinity: Axis.vertical,
+                          ),
+                          Draggable<Color> (
+                            data: Colors.orange,
+                            child: dotHalf,
+                            feedback: dotHalf,
+                            childWhenDragging: dotHalf,
+                            affinity: Axis.vertical,
+                          ),
+                          Draggable<Color> (
+                            data: Colors.yellow,
+                            child: half,
+                            feedback: half,
+                            childWhenDragging: half,
+                            affinity: Axis.vertical,
+                          ),
+                          Draggable<Color> (
+                            data: Colors.green,
+                            child: dotQuarter,
+                            feedback: dotQuarter,
+                            childWhenDragging: dotQuarter,
+                            affinity: Axis.vertical,
+                          ),
+                          Draggable<Color> (
+                            data: Colors.blue,
+                            child: quarter,
+                            feedback: quarter,
+                            childWhenDragging: quarter,
+                            affinity: Axis.vertical,
+                          ),
+                        ]
+                    )
+                ),
+                Expanded (
+                  child: Container (
+                    color: Colors.grey,
+                    child: Center (
+                      child: MeasureBoxWidget()
+                    )
+                  )
                 )
-              )
-            )
-          ],// Children
-        ),
+              ] // Children
+          )
       ),
     );
   }
 }
 
-class MeasureBox extends StatefulWidget {
+class MeasureBoxWidget extends StatefulWidget {
   @override
-  _MeasureBoxState createState() => _MeasureBoxState();
+  _MBWidgetState createState() => _MBWidgetState();
 }
-class _MeasureBoxState extends State<MeasureBox> {
+class _MBWidgetState extends State<MeasureBoxWidget> {
   int _howFull = 0;
-  int _capacity = 16;
+  int _maxFull = 16;
   @override
   Widget build(BuildContext context) {
-    DragTarget<Color>(
-      onWillAccept: (value) => true,
-      onAccept: (value) {
-
-      },
-      onLeave: (value) {
-
-      },
-    );
-    return Container(
-      width: 100*n,
+    return Container (
       height: 40*n,
-      color: Colors.white,
+      width: 100*n,
+      decoration: BoxDecoration(
+          color: Colors.white60,
+          border: Border.all(
+            color: Colors.white,
+            width: 2*n,
+          )
+      ),
     );
   }
 }
