@@ -5,6 +5,10 @@ void main() {
   runApp(MyApp());
 }
 
+final listOfColors = [Colors.red, Colors.orange, Colors.yellow, Colors.green, Colors.blue, Colors.purple, Colors.grey];
+final listOfWidths = [96, 72, 48, 36, 24, 24, 24];
+final listOfDurations = [16, 12, 8, 6, 4, 4, 4];
+
 final n = 3.0; // Scale factor for scroll blocks
 final whole = Container (
   width: 96*n,
@@ -90,11 +94,20 @@ class MyApp extends StatelessWidget {
                         ]
                     )
                 ),
-                Expanded (
-                  child: Container (
-                    color: Colors.grey,
-                    child: Center (
-                      child: MeasureBoxWidget()
+                Expanded(
+                  child: Center (
+                    child: Container (
+                        height: 40*n,
+                        width: 100*n,
+                        color: Colors.grey,
+                        child: Center (
+                          child: Container (
+                            height: 36*n,
+                            width: 96*n,
+                            color: Colors.white,
+                            child: MeasureBoxWidget()
+                          )
+                        )
                     )
                   )
                 )
@@ -109,22 +122,50 @@ class MeasureBoxWidget extends StatefulWidget {
   @override
   MeasureBoxWidget({Key key}) : super(key: key);
   _MBWidgetState createState() => _MBWidgetState();
+  Widget build(BuildContext context) {
 
+  }
 }
 class _MBWidgetState extends State<MeasureBoxWidget> {
   int _howFull = 0;
   int _maxFull = 16;
+  int _howMany = 0;
+  var _currentList = [];
   @override
   bool successfulDrop;
   Widget build(BuildContext context) {
     return DragTarget<Color>(
       builder: (BuildContext context, List<Color> incoming, List rejected) {
         if (successfulDrop == true) {
-          return whole;
+          return Center (
+            child: Row(
+              children: [
+                for (var i in _currentList) Container(
+                  color: i,
+                  height: 36*n,
+                  width: listOfWidths[listOfColors.indexOf(i)] * n,
+                )
+              ],
+            )
+          );
         } else {
-          return half;
+          return null;
         }
       },
+
+      onWillAccept: (data) => listOfDurations[listOfColors.indexOf(data)] + _howFull <= _maxFull,
+
+      onAccept: (data) {
+        setState(() {
+          successfulDrop = true;
+          _howFull = listOfDurations[listOfColors.indexOf(data)] + _howFull;
+          _currentList.add(data);
+        });
+      },
+      onLeave: (data) {
+
+      },
+
     );
   }
 }
