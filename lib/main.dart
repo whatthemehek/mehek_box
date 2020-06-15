@@ -8,7 +8,7 @@ void main() {
 final listOfColors = [Colors.red, Colors.orange, Colors.yellow, Colors.green, Colors.blue, Colors.purple, Colors.grey];
 final listOfWidths = [96, 72, 48, 36, 24, 24, 24];
 final listOfDurations = [16, 12, 8, 6, 4, 4, 4];
-final listOfContainers = [whole, dotHalf, half, dotQuarter, quarter];
+final listOfContainers = [whole, dotHalf, half, dotQuarter, quarter, oneEAndA];
 var _currentList = [];
 int _howFull = 0;
 
@@ -40,6 +40,11 @@ final quarter = Container (
   height: 36*n,
   color: Colors.blue,
 );
+final oneEAndA = Container (
+  width: 24*n,
+  height: 36*n,
+  color: Colors.purple,
+);
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -60,47 +65,20 @@ class MyApp extends StatelessWidget {
                     child: ListView(
                         scrollDirection: Axis.horizontal,
                         children: [
-                          Draggable<Color> (
-                            data: Colors.red,
-                            child: whole,
-                            feedback: whole,
-                            childWhenDragging: whole,
-                            affinity: Axis.vertical,
-                          ),
-                          Draggable<Color> (
-                            data: Colors.orange,
-                            child: dotHalf,
-                            feedback: dotHalf,
-                            childWhenDragging: dotHalf,
-                            affinity: Axis.vertical,
-                          ),
-                          Draggable<Color> (
-                            data: Colors.yellow,
-                            child: half,
-                            feedback: half,
-                            childWhenDragging: half,
-                            affinity: Axis.vertical,
-                          ),
-                          Draggable<Color> (
-                            data: Colors.green,
-                            child: dotQuarter,
-                            feedback: dotQuarter,
-                            childWhenDragging: dotQuarter,
-                            affinity: Axis.vertical,
-                          ),
-                          Draggable<Color> (
-                            data: Colors.blue,
-                            child: quarter,
-                            feedback: quarter,
-                            childWhenDragging: quarter,
-                            affinity: Axis.vertical,
-                          ),
+                          for (var i in listOfContainers)
+                            Draggable<Color>(
+                              child: i,
+                              feedback: i,
+                              childWhenDragging: i,
+                              data: listOfColors[(listOfContainers.indexOf(i))],
+                              affinity: Axis.vertical,
+                            )
                         ]
                     )
                 ),
                 Expanded(
                     child: Container(
-                        color: Colors.blue,
+                        color: Color(0xffe4e1),
                         child: BackgroundWidget(),
                     )
                 )
@@ -127,34 +105,48 @@ class _BackgroundWidgetState extends State<BackgroundWidget> {
         if (successfulDrop == true) {
           return Center (
               child: Container (
-                  height: 40*n,
-                  width: 100*n,
-                  color: Colors.grey,
-                  child: Center (
-                      child: Container (
-                          height: 36*n,
-                          width: 96*n,
-                          color: Colors.white,
-                          child: MeasureBoxWidget()
-                      )
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 1,
+                    ),
+                  ),
+                  child: Container (
+                    height: 40*n,
+                    width: 100*n,
+                    decoration: BoxDecoration(
+                      color: Color(0xfff8dc),
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 2*n,
+                      ),
+                    ),
+                    child: MeasureBoxWidget()
                   )
               )
           );
         } else {
           return Center (
+            child: Container (
+              decoration: BoxDecoration(
+                border: Border.all(
+                color: Colors.grey,
+                width: 1,
+                ),
+              ),
               child: Container (
-                  height: 40*n,
-                  width: 100*n,
-                  color: Colors.grey,
-                  child: Center (
-                      child: Container (
-                          height: 36*n,
-                          width: 96*n,
-                          color: Colors.white,
-                          child: MeasureBoxWidget()
-                      )
-                  )
+                height: 40*n,
+                width: 100*n,
+                decoration: BoxDecoration(
+                  color: Color(0xc9c9c9),
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 2*n,
+                  ),
+                ),
+                child: MeasureBoxWidget()
               )
+            )
           );
         }
       },
