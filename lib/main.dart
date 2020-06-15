@@ -8,6 +8,10 @@ void main() {
 final listOfColors = [Colors.red, Colors.orange, Colors.yellow, Colors.green, Colors.blue, Colors.purple, Colors.grey];
 final listOfWidths = [96, 72, 48, 36, 24, 24, 24];
 final listOfDurations = [16, 12, 8, 6, 4, 4, 4];
+final listOfContainers = [whole, dotHalf, half, dotQuarter, quarter];
+var _currentList = [];
+int _howFull = 0;
+
 
 final n = 3.0; // Scale factor for scroll blocks
 final whole = Container (
@@ -95,29 +99,83 @@ class MyApp extends StatelessWidget {
                     )
                 ),
                 Expanded(
-                  child: Center (
-                    child: Container (
-                        height: 40*n,
-                        width: 100*n,
-                        color: Colors.grey,
-                        child: Center (
-                          child: Container (
-                            height: 36*n,
-                            width: 96*n,
-                            color: Colors.white,
-                            child: MeasureBoxWidget()
-                          )
-                        )
+                    child: Container(
+                        color: Colors.blue,
+                        child: BackgroundWidget(),
                     )
-                  )
                 )
-              ] // Children
+              ]// Children
           )
       ),
     );
   }
 }
+class BackgroundWidget extends StatefulWidget {
+  @override
+  BackgroundWidget({Key key}) : super(key: key);
+  _BackgroundWidgetState createState() => _BackgroundWidgetState();
+  Widget build(BuildContext context) {
 
+  }
+}
+class _BackgroundWidgetState extends State<BackgroundWidget> {
+  @override
+  bool successfulDrop;
+  Widget build(BuildContext context) {
+    return DragTarget<int>(
+      builder: (BuildContext context, List<int> incoming, List rejected) {
+        if (successfulDrop == true) {
+          return Center (
+              child: Container (
+                  height: 40*n,
+                  width: 100*n,
+                  color: Colors.grey,
+                  child: Center (
+                      child: Container (
+                          height: 36*n,
+                          width: 96*n,
+                          color: Colors.white,
+                          child: MeasureBoxWidget()
+                      )
+                  )
+              )
+          );
+        } else {
+          return Center (
+              child: Container (
+                  height: 40*n,
+                  width: 100*n,
+                  color: Colors.grey,
+                  child: Center (
+                      child: Container (
+                          height: 36*n,
+                          width: 96*n,
+                          color: Colors.white,
+                          child: MeasureBoxWidget()
+                      )
+                  )
+              )
+          );
+        }
+      },
+
+      onAccept: (data) {
+        setState(() {
+          successfulDrop = true;
+          _howFull = _howFull - listOfDurations[listOfColors.indexOf(_currentList[data])];
+          _currentList.removeAt(data);
+        });
+      },
+      onLeave: (data) {
+
+      },
+
+    );
+  }
+}
+////
+////
+////
 class MeasureBoxWidget extends StatefulWidget {
   @override
   MeasureBoxWidget({Key key}) : super(key: key);
@@ -127,10 +185,8 @@ class MeasureBoxWidget extends StatefulWidget {
   }
 }
 class _MBWidgetState extends State<MeasureBoxWidget> {
-  int _howFull = 0;
   int _maxFull = 16;
   int _howMany = 0;
-  var _currentList = [];
   @override
   bool successfulDrop;
   Widget build(BuildContext context) {
@@ -140,11 +196,13 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
           return Center (
             child: Row(
               children: [
-                for (var i in _currentList) Container(
-                  color: i,
-                  height: 36*n,
-                  width: listOfWidths[listOfColors.indexOf(i)] * n,
-                )
+                for (var i in _currentList)
+                  Draggable(
+                    child: listOfContainers[listOfColors.indexOf(i)],
+                    feedback: listOfContainers[listOfColors.indexOf(i)],
+                    childWhenDragging: null,
+                    data: (_currentList.indexOf(i)),
+                  )
               ],
             )
           );
@@ -169,3 +227,4 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
     );
   }
 }
+
