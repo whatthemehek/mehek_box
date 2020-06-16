@@ -64,8 +64,10 @@ class MyApp extends StatelessWidget {
             title: Text('Measure Box'),
           ),
           body: Column (
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Container (
+                    margin: EdgeInsets.symmetric(vertical: 20.0),
                     height: 36*n,
                     child: ListView(
                         scrollDirection: Axis.horizontal,
@@ -87,8 +89,26 @@ class MyApp extends StatelessWidget {
                         child: BackgroundWidget(),
                     )
                 ),
+                Container(
+                    margin: EdgeInsets.symmetric(vertical: 30.0),
+                    child: Ink(
+                      decoration: const ShapeDecoration(
+                        color: Colors.lightBlue,
+                        shape: CircleBorder(),
+                      ),
+                      child: IconButton(
+                        iconSize: 50.0,
+                        icon: Icon(Icons.play_arrow),
+                        tooltip: 'Increase volume by 10',
+                        color: Colors.white,
+                        onPressed: () {
+
+                        },
+                      ),
+                    )
+                )
               ]// Children
-          )
+          ),
       ),
     );
   }
