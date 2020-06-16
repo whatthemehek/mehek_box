@@ -89,24 +89,24 @@ class MyApp extends StatelessWidget {
                         child: BackgroundWidget(),
                     )
                 ),
-                Container(
-                    margin: EdgeInsets.symmetric(vertical: 30.0),
-                    child: Ink(
-                      decoration: const ShapeDecoration(
-                        color: Colors.lightBlue,
-                        shape: CircleBorder(),
-                      ),
-                      child: IconButton(
-                        iconSize: 50.0,
-                        icon: Icon(Icons.play_arrow),
-                        tooltip: 'Increase volume by 10',
-                        color: Colors.white,
-                        onPressed: () {
-
-                        },
-                      ),
-                    )
-                )
+//                Container(
+//                    margin: EdgeInsets.symmetric(vertical: 30.0),
+//                    child: Ink(
+//                      decoration: const ShapeDecoration(
+//                        color: Colors.lightBlue,
+//                        shape: CircleBorder(),
+//                      ),
+//                      child: IconButton(
+//                        iconSize: 50.0,
+//                        icon: Icon(Icons.play_arrow),
+//                        tooltip: 'Increase volume by 10',
+//                        color: Colors.white,
+//                        onPressed: () {
+//
+//                        },
+//                      ),
+//                    )
+//                )
               ]// Children
           ),
       ),
@@ -128,51 +128,9 @@ class _BackgroundWidgetState extends State<BackgroundWidget> {
     return DragTarget<int>(
       builder: (BuildContext context, List<int> incoming, List rejected) {
         if (successfulDrop == true) {
-          return Center (
-              child: Container (
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.grey,
-                      width: 1,
-                    ),
-                  ),
-                  child: Container (
-                    height: 40*n,
-                    width: 100*n,
-                    decoration: BoxDecoration(
-                      color: Color(0xfff8dc),
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 2*n,
-                      ),
-                    ),
-                    child: MeasureBoxWidget()
-                  )
-              )
-          );
+          return MeasureBoxWidget();
         } else {
-          return Center (
-            child: Container (
-              decoration: BoxDecoration(
-                border: Border.all(
-                color: Colors.grey,
-                width: 1,
-                ),
-              ),
-              child: Container (
-                height: 40*n,
-                width: 100*n,
-                decoration: BoxDecoration(
-                  color: Color(0xc9c9c9),
-                  border: Border.all(
-                    color: Colors.white,
-                    width: 2*n,
-                  ),
-                ),
-                child: MeasureBoxWidget()
-              )
-            )
-          );
+          return MeasureBoxWidget();
         }
       },
 
@@ -201,30 +159,117 @@ class MeasureBoxWidget extends StatefulWidget {
 
   }
 }
+
 class _MBWidgetState extends State<MeasureBoxWidget> {
   int _maxFull = 16;
   int _howMany = 0;
   @override
   bool successfulDrop;
+  bool isButtonEnabled;
+  Function _enableButton() {
+    isButtonEnabled = (_howFull == _maxFull);
+    if (isButtonEnabled) {
+      return () {
+        print('Hi');
+      };
+    } else {
+      return null;
+    }
+  }
   Widget build(BuildContext context) {
     return DragTarget<Color>(
       builder: (BuildContext context, List<Color> incoming, List rejected) {
         if (successfulDrop == true) {
-          return Center (
-            child: Row(
-              children: [
-                for (var i in _currentList)
-                  Draggable(
-                    child: listOfContainers[listOfColors.indexOf(i)],
-                    feedback: listOfContainers[listOfColors.indexOf(i)],
-                    childWhenDragging: null,
-                    data: (_currentList.indexOf(i)),
-                  ),
-              ],
-            )
+          return Column (
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Center (
+                child: Container (
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.grey,
+                        width: 1,
+                      ),
+                    ),
+                    child: Container (
+                        height: 40*n,
+                        width: 100*n,
+                        decoration: BoxDecoration(
+                          color: Color(0xc9c9c9),
+                          border: Border.all(
+                            color: Colors.white,
+                            width: 2*n,
+                          ),
+                        ),
+                        child: Center (
+                            child: Row(
+                              children: [
+                                for (var i in _currentList)
+                                  Draggable(
+                                    child: listOfContainers[listOfColors.indexOf(i)],
+                                    feedback: listOfContainers[listOfColors.indexOf(i)],
+                                    childWhenDragging: null,
+                                    data: (_currentList.indexOf(i)),
+                                  ),
+                              ],
+                            )
+                        )
+                    )
+                )
+              ),
+              Container(
+                  margin: EdgeInsets.symmetric(vertical: 30.0),
+                  child: Ink(
+                    decoration: const ShapeDecoration(
+                      color: Colors.lightBlue,
+                      shape: CircleBorder(),
+                    ),
+                    child: IconButton (
+                      iconSize: 50.0,
+                      icon: Icon(Icons.play_arrow),
+                      color: Colors.white,
+                      disabledColor: Colors.grey,
+                      onPressed: _enableButton(),
+                    ),
+                  )
+              )
+            ]
           );
         } else {
-          return null;
+          return Center (
+              child: Container (
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey,
+                      width: 1,
+                    ),
+                  ),
+                  child: Container (
+                      height: 40*n,
+                      width: 100*n,
+                      decoration: BoxDecoration(
+                        color: Color(0xc9c9c9),
+                        border: Border.all(
+                          color: Colors.white,
+                          width: 2*n,
+                        ),
+                      ),
+                      child: Center (
+                          child: Row(
+                            children: [
+                              for (var i in _currentList)
+                                Draggable(
+                                  child: listOfContainers[listOfColors.indexOf(i)],
+                                  feedback: listOfContainers[listOfColors.indexOf(i)],
+                                  childWhenDragging: null,
+                                  data: (_currentList.indexOf(i)),
+                                ),
+                            ],
+                          )
+                      )
+                  )
+              )
+          );
         }
       },
 
