@@ -5,46 +5,51 @@ void main() {
   runApp(MyApp());
 }
 
-final listOfColors = [Colors.red, Colors.orange, Colors.yellow, Colors.green, Colors.blue, Colors.purple, Colors.grey];
-final listOfWidths = [96, 72, 48, 36, 24, 24, 24];
-final listOfDurations = [16, 12, 8, 6, 4, 4, 4];
-final listOfContainers = [whole, dotHalf, half, dotQuarter, quarter, oneEAndA];
+final listOfColors = [Colors.red, Colors.orange, Colors.yellow, Colors.green, Colors.blue,
+                      Colors.brown, Colors.deepOrange[800], Colors.amber[600],
+                      Colors.purple, Colors.grey, Colors.pink, Colors.tealAccent[100],
+                      Colors.lightGreenAccent[100], Colors.lightGreenAccent[400], Colors.indigo];
+final listOfWidths = [96, 72, 48, 36, 24, 18, 12, 6, 24, 24, 24, 24, 24, 24, 24];
+final listOfDurations = [16, 12, 8, 6, 4, 3, 2, 1, 4, 4, 4, 4, 4, 4, 4];
+final listOfNames = ['whole', 'dotHalf', 'half', 'dotQuarter', 'quarter',
+                    'dotEighth', 'eighth', 'sixteenth',
+                    'oneEAndA', 'oneAnd', 'oneAndA', 'oneEAnd', 'eAndA', 'oneEA', 'oneA'];
+final rhythmArrays = [[16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16], //Whole
+                      [12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12], //Dot Half
+                      [8, 8, 8, 8, 8, 8, 8, 8], //Half
+                      [6, 6, 6, 6, 6, 6], //Dot Quarter
+                      [4, 4, 4, 4], //Quarter
+                      [3, 3, 3], //Dot Eighth
+                      [2, 2], //Eighth
+                      [1], //Sixteenth
+                      [1, 1, 1, 1], //One E And A
+                      [2, 2, 2, 2], //One And
+                      [2, 2, 1, 1], //One And A
+                      [1, 1, 2, 2], //One E And
+                      [0, 1, 1, 1], //E And A
+                      [1, 2, 2, 1], //One E A
+                      [3, 3, 3, 1]]; //One A
+final List<int> measureRhythm = [];
+final listOfContainers = [
+  for (var j in listOfNames)
+    Container(
+      width: (listOfWidths[listOfNames.indexOf(j)] * n),
+      height: 36 * n,
+      decoration: BoxDecoration(
+        color: listOfColors[listOfNames.indexOf(j)],
+        border: Border.all(
+          color: Colors.black,
+          width: 1,
+        ),
+      ),
+    )
+];
 var _currentList = [];
 int _howFull = 0;
 
 
 final n = 3.0; // Scale factor for scroll blocks
-final whole = Container (
-  width: 96*n,
-  height: 36*n,
-  color: Colors.red,
-);
 
-final dotHalf = Container (
-  width: 72*n,
-  height: 36*n,
-  color: Colors.orange,
-);
-final half = Container (
-  width: 48*n,
-  height: 36*n,
-  color: Colors.yellow,
-);
-final dotQuarter = Container (
-  width: 36*n,
-  height: 36*n,
-  color: Colors.green,
-);
-final quarter = Container (
-  width: 24*n,
-  height: 36*n,
-  color: Colors.blue,
-);
-final oneEAndA = Container (
-  width: 24*n,
-  height: 36*n,
-  color: Colors.purple,
-);
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -81,7 +86,7 @@ class MyApp extends StatelessWidget {
                         color: Color(0xffe4e1),
                         child: BackgroundWidget(),
                     )
-                )
+                ),
               ]// Children
           )
       ),
@@ -107,7 +112,7 @@ class _BackgroundWidgetState extends State<BackgroundWidget> {
               child: Container (
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Colors.black,
+                      color: Colors.grey,
                       width: 1,
                     ),
                   ),
@@ -194,7 +199,7 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
                     feedback: listOfContainers[listOfColors.indexOf(i)],
                     childWhenDragging: null,
                     data: (_currentList.indexOf(i)),
-                  )
+                  ),
               ],
             )
           );
