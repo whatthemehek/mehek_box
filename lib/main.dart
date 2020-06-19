@@ -170,7 +170,16 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
     isButtonEnabled = (_howFull == _maxFull);
     if (isButtonEnabled) {
       return () {
-        print('Hi');
+        measureRhythm.clear();
+        for (var l in _currentList) {
+          measureRhythm.addAll(rhythmArrays[listOfColors.indexOf(l)]);
+        }
+        var loadAllArray = [];
+        for (int i = 0; i < measureRhythm.length; i++) {
+          loadAllArray.add('Index'+ (i + 1).toString() + 'Length' + measureRhythm[i].toString());
+          i = i + measureRhythm[i] - 1;
+        }
+        print(loadAllArray);
       };
     } else {
       return null;
@@ -218,57 +227,66 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
                 )
               ),
               Container(
-                  margin: EdgeInsets.symmetric(vertical: 30.0),
-                  child: Ink(
-                    decoration: const ShapeDecoration(
-                      color: Colors.lightBlue,
-                      shape: CircleBorder(),
-                    ),
-                    child: IconButton (
-                      iconSize: 50.0,
-                      icon: Icon(Icons.play_arrow),
-                      color: Colors.white,
+                  margin: EdgeInsets.symmetric(vertical: 20.0),
+                  child: IconButton (
+                      iconSize: 80.0,
+                      icon: Icon(Icons.play_circle_filled),
+                      color: Colors.blue,
                       disabledColor: Colors.grey,
                       onPressed: _enableButton(),
-                    ),
-                  )
+                  ),
               )
             ]
           );
         } else {
-          return Center (
-              child: Container (
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.grey,
-                      width: 1,
-                    ),
-                  ),
-                  child: Container (
-                      height: 40*n,
-                      width: 100*n,
-                      decoration: BoxDecoration(
-                        color: Color(0xc9c9c9),
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 2*n,
+          return Column (
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Center (
+                    child: Container (
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.grey,
+                            width: 1,
+                          ),
                         ),
-                      ),
-                      child: Center (
-                          child: Row(
-                            children: [
-                              for (var i in _currentList)
-                                Draggable(
-                                  child: listOfContainers[listOfColors.indexOf(i)],
-                                  feedback: listOfContainers[listOfColors.indexOf(i)],
-                                  childWhenDragging: null,
-                                  data: (_currentList.indexOf(i)),
-                                ),
-                            ],
-                          )
-                      )
-                  )
-              )
+                        child: Container (
+                            height: 40*n,
+                            width: 100*n,
+                            decoration: BoxDecoration(
+                              color: Color(0xc9c9c9),
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 2*n,
+                              ),
+                            ),
+                            child: Center (
+                                child: Row(
+                                  children: [
+                                    for (var i in _currentList)
+                                      Draggable(
+                                        child: listOfContainers[listOfColors.indexOf(i)],
+                                        feedback: listOfContainers[listOfColors.indexOf(i)],
+                                        childWhenDragging: null,
+                                        data: (_currentList.indexOf(i)),
+                                      ),
+                                  ],
+                                )
+                            )
+                        )
+                    )
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 20.0),
+                  child: IconButton (
+                    iconSize: 80.0,
+                    icon: Icon(Icons.play_circle_filled),
+                    color: Colors.blue,
+                    disabledColor: Colors.grey,
+                    onPressed: _enableButton(),
+                  ),
+                )
+              ]
           );
         }
       },
