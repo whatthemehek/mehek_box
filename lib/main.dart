@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audio_cache.dart';
@@ -172,7 +173,9 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
   @override
   bool successfulDrop;
   bool isButtonEnabled;
-  AudioCache player = AudioCache();
+  bool complete = false;
+  static AudioPlayer audio = new AudioPlayer();
+  AudioCache player = new AudioCache(fixedPlayer: audio);
   Function _enableButton() {
     isButtonEnabled = (_howFull == _maxFull);
     if (isButtonEnabled) {
@@ -190,9 +193,12 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
           }
         }
         player.loadAll(loadAllArray);
-        print(loadAllArray);
-        for (var q in loadAllArray) {
-          player.play('sounds/'+ q +'.wav');
+        int q = 0;
+        while (q < loadAllArray.length) {
+          player.play('sounds/' + loadAllArray[q] + '.wav');
+          audio.onPlayerCompletion.listen((event) {
+            q++;
+          });
         }
       };
     } else {
