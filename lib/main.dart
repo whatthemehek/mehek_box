@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audio_cache.dart';
 
 void main() {
   runApp(MyApp());
@@ -8,18 +9,24 @@ void main() {
 final listOfColors = [Colors.red, Colors.orange, Colors.yellow, Colors.green, Colors.blue,
                       Colors.brown, Colors.deepOrange[800], Colors.amber[600],
                       Colors.purple, Colors.grey, Colors.pink, Colors.tealAccent[100],
-                      Colors.lightGreenAccent[100], Colors.lightGreenAccent[400], Colors.indigo];
-final listOfWidths = [96, 72, 48, 36, 24, 18, 12, 6, 24, 24, 24, 24, 24, 24, 24];
-final listOfDurations = [16, 12, 8, 6, 4, 3, 2, 1, 4, 4, 4, 4, 4, 4, 4];
+                      Colors.lightGreenAccent[100], Colors.lightGreenAccent[400], Colors.indigo,
+                      Colors.black];
+final listOfDarkColors = [Colors.red[900], Colors.orange[900], Colors.yellow[900], Colors.green[900], Colors.blue[900],
+                          Colors.brown[900], Colors.red[900], Colors.amber[900],
+                          Colors.purple[900], Colors.grey[800], Colors.pink[900], Colors.tealAccent[400],
+                          Colors.lightGreenAccent[700], Colors.lightGreen[700], Colors.indigo[900],
+                          Colors.white];
+final listOfWidths = [96, 72, 48, 36, 24, 18, 12, 6, 24, 24, 24, 24, 24, 24, 24, 24];
+final listOfDurations = [16, 12, 8, 6, 4, 3, 2, 1, 4, 4, 4, 4, 4, 4, 4, 4];
 final listOfNames = ['whole', 'dotHalf', 'half', 'dotQuarter', 'quarter',
                     'dotEighth', 'eighth', 'sixteenth',
-                    'oneEAndA', 'oneAnd', 'oneAndA', 'oneEAnd', 'eAndA', 'oneEA', 'oneA'];
-final rhythmArrays = [[16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16], //Whole
-                      [12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12], //Dot Half
-                      [8, 8, 8, 8, 8, 8, 8, 8], //Half
-                      [6, 6, 6, 6, 6, 6], //Dot Quarter
-                      [4, 4, 4, 4], //Quarter
-                      [3, 3, 3], //Dot Eighth
+                    'oneEAndA', 'oneAnd', 'oneAndA', 'oneEAnd', 'eAndA', 'oneEA', 'oneA', 'quarterRest'];
+final rhythmArrays = [[16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16], //1: Whole
+                      [12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12], //2: Dot Half
+                      [8, 8, 8, 8, 8, 8, 8, 8], //3: Half
+                      [6, 6, 6, 6, 6, 6], //4: Dot Quarter
+                      [4, 4, 4, 4], //5: Quarter
+                      [3, 3, 3], //6: Dot Eighth
                       [2, 2], //Eighth
                       [1], //Sixteenth
                       [1, 1, 1, 1], //One E And A
@@ -28,17 +35,33 @@ final rhythmArrays = [[16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 1
                       [1, 1, 2, 2], //One E And
                       [0, 1, 1, 1], //E And A
                       [1, 2, 2, 1], //One E A
-                      [3, 3, 3, 1]]; //One A
+                      [3, 3, 3, 1], //One A
+                      [0, 0, 0, 0], //Quarter Rest
+                      ];
+final labelArray = ['w', 'd', 'h', 'j', ' q', 'i', 'e', 's', 'Y', 'n', 'm', 'M', 'S³', '¾', 'o', 'Q'];
+final listOfScales = [4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 5.0];
 final List<int> measureRhythm = [];
 final listOfContainers = [
   for (var j in listOfNames)
     Container(
+      child: Center (
+        child: Text (
+          labelArray[listOfNames.indexOf(j)],
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontFamily: 'Musisync',
+              color: listOfDarkColors[listOfNames.indexOf(j)],
+          ),
+          textScaleFactor: listOfScales[listOfNames.indexOf(j)],
+
+        ),
+      ),
       width: (listOfWidths[listOfNames.indexOf(j)] * n),
       height: 36 * n,
       decoration: BoxDecoration(
         color: listOfColors[listOfNames.indexOf(j)],
         border: Border.all(
-          color: Colors.black,
+          color: listOfDarkColors[listOfNames.indexOf(j)],
           width: 1,
         ),
       ),
@@ -75,7 +98,9 @@ class MyApp extends StatelessWidget {
                           for (var i in listOfContainers)
                             Draggable<Color>(
                               child: i,
-                              feedback: i,
+                              feedback: Material (
+                                child: i,
+                              ),
                               childWhenDragging: i,
                               data: listOfColors[(listOfContainers.indexOf(i))],
                               affinity: Axis.vertical,
@@ -89,24 +114,6 @@ class MyApp extends StatelessWidget {
                         child: BackgroundWidget(),
                     )
                 ),
-//                Container(
-//                    margin: EdgeInsets.symmetric(vertical: 30.0),
-//                    child: Ink(
-//                      decoration: const ShapeDecoration(
-//                        color: Colors.lightBlue,
-//                        shape: CircleBorder(),
-//                      ),
-//                      child: IconButton(
-//                        iconSize: 50.0,
-//                        icon: Icon(Icons.play_arrow),
-//                        tooltip: 'Increase volume by 10',
-//                        color: Colors.white,
-//                        onPressed: () {
-//
-//                        },
-//                      ),
-//                    )
-//                )
               ]// Children
           ),
       ),
@@ -162,24 +169,31 @@ class MeasureBoxWidget extends StatefulWidget {
 
 class _MBWidgetState extends State<MeasureBoxWidget> {
   int _maxFull = 16;
-  int _howMany = 0;
   @override
   bool successfulDrop;
   bool isButtonEnabled;
+  AudioCache player = AudioCache();
   Function _enableButton() {
     isButtonEnabled = (_howFull == _maxFull);
     if (isButtonEnabled) {
       return () {
+        player.clearCache();
         measureRhythm.clear();
         for (var l in _currentList) {
           measureRhythm.addAll(rhythmArrays[listOfColors.indexOf(l)]);
         }
-        var loadAllArray = [];
+        List<String> loadAllArray = [];
         for (int i = 0; i < measureRhythm.length; i++) {
           loadAllArray.add('Index'+ (i + 1).toString() + 'Length' + measureRhythm[i].toString());
-          i = i + measureRhythm[i] - 1;
+          if (measureRhythm[i] != 0) {
+            i = i + measureRhythm[i] - 1;
+          }
         }
+        player.loadAll(loadAllArray);
         print(loadAllArray);
+        for (var q in loadAllArray) {
+          player.play('sounds/'+ q +'.wav');
+        }
       };
     } else {
       return null;
@@ -216,7 +230,9 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
                                 for (var i in _currentList)
                                   Draggable(
                                     child: listOfContainers[listOfColors.indexOf(i)],
-                                    feedback: listOfContainers[listOfColors.indexOf(i)],
+                                    feedback: Material (
+                                      child: listOfContainers[listOfColors.indexOf(i)],
+                                    ),
                                     childWhenDragging: null,
                                     data: (_currentList.indexOf(i)),
                                   ),
