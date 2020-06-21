@@ -12,6 +12,7 @@ dependencies:
   audioplayers: ^0.15.1
   flutter:
     sdk: flutter
+  path_provider:
 
   cupertino_icons: ^0.1.3
 
@@ -25,7 +26,10 @@ flutter:
       fonts:
         - asset: fonts/Musisync-KVLZ.ttf
         - asset: fonts/Musisync-qYy6.ttf
-  assets:
-    - assets/sounds/
+
   uses-material-design: true
+
+  assets:
+    - assets/button-1.mp3
+    - assets/sounds/
 

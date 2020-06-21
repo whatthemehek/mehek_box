@@ -2,7 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audio_cache.dart';
-import 'dart:async';
+import 'package:path_provider/path_provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -190,7 +190,6 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
             i = i + measureRhythm[i] - 1;
           }
         }
-
         List<AudioPlayer> playerList = [
         for (String i in loadAllArray)
           AudioPlayer()
@@ -199,17 +198,16 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
           for (String i in loadAllArray)
             AudioCache(fixedPlayer: playerList[loadAllArray.indexOf(i)], prefix: 'sounds/')
         ];
-        void onComplete(String filename, int i) {
-          cacheList[i].play(filename);
+        for (AudioCache j in cacheList) {
+          j.load(loadAllArray[cacheList.indexOf(j)]);
         }
-        print(loadAllArray);
         for (String i in loadAllArray) {
           int place = loadAllArray.indexOf(i);
           if (place == 0) {
             cacheList[0].play(i);
           } else {
             playerList[place - 1].onPlayerCompletion.listen((event) {
-              onComplete(i, place);
+              cacheList[place].play(i);
             });
           }
         }
