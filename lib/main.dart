@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audio_cache.dart';
+import 'dart:async';
 
 void main() {
   runApp(MyApp());
@@ -174,31 +175,43 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
   bool successfulDrop;
   bool isButtonEnabled;
   bool complete = false;
-  static AudioPlayer audio = new AudioPlayer();
-  AudioCache player = new AudioCache(fixedPlayer: audio);
   Function _enableButton() {
     isButtonEnabled = (_howFull == _maxFull);
     if (isButtonEnabled) {
       return () {
-        player.clearCache();
         measureRhythm.clear();
         for (var l in _currentList) {
           measureRhythm.addAll(rhythmArrays[listOfColors.indexOf(l)]);
         }
         List<String> loadAllArray = [];
         for (int i = 0; i < measureRhythm.length; i++) {
-          loadAllArray.add('Index'+ (i + 1).toString() + 'Length' + measureRhythm[i].toString());
+          loadAllArray.add('Index'+ (i + 1).toString() + 'Length' + measureRhythm[i].toString() + '.wav');
           if (measureRhythm[i] != 0) {
             i = i + measureRhythm[i] - 1;
           }
         }
-        player.loadAll(loadAllArray);
-        int q = 0;
-        while (q < loadAllArray.length) {
-          player.play('sounds/' + loadAllArray[q] + '.wav');
-          audio.onPlayerCompletion.listen((event) {
-            q++;
-          });
+
+        List<AudioPlayer> playerList = [
+        for (String i in loadAllArray)
+          AudioPlayer()
+        ];
+        List<AudioCache> cacheList = [
+          for (String i in loadAllArray)
+            AudioCache(fixedPlayer: playerList[loadAllArray.indexOf(i)], prefix: 'sounds/')
+        ];
+        void onComplete(String filename, int i) {
+          cacheList[i].play(filename);
+        }
+        print(loadAllArray);
+        for (String i in loadAllArray) {
+          int place = loadAllArray.indexOf(i);
+          if (place == 0) {
+            cacheList[0].play(i);
+          } else {
+            playerList[place - 1].onPlayerCompletion.listen((event) {
+              onComplete(i, place);
+            });
+          }
         }
       };
     } else {
