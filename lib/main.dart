@@ -169,6 +169,9 @@ class MeasureBoxWidget extends StatefulWidget {
   }
 }
 
+
+final AudioCache player = new AudioCache(prefix: 'sounds2/');
+
 class _MBWidgetState extends State<MeasureBoxWidget> {
   int _maxFull = 16;
   @override
@@ -183,6 +186,7 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
         for (var l in _currentList) {
           measureRhythm.addAll(rhythmArrays[listOfColors.indexOf(l)]);
         }
+        player.clearCache();
         List<String> loadAllArray = [];
         for (int i = 0; i < measureRhythm.length; i++) {
           loadAllArray.add('Index'+ (i + 1).toString() + 'Length' + measureRhythm[i].toString() + '.wav');
@@ -190,8 +194,6 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
             i = i + measureRhythm[i] - 1;
           }
         }
-        print(loadAllArray);
-        AudioCache player = new AudioCache(prefix: 'sounds2/');
         player.loadAll(loadAllArray);
         for (String j in loadAllArray) {
           player.play(j);
