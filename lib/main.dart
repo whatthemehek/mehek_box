@@ -194,7 +194,9 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
             i = i + measureRhythm[i] - 1;
           }
         }
+        player.load('metronome.mp3');
         player.loadAll(loadAllArray);
+        player.play('metronome.mp3');
         for (String j in loadAllArray) {
           player.play(j);
         }
