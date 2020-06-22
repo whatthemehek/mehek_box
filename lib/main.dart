@@ -190,26 +190,11 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
             i = i + measureRhythm[i] - 1;
           }
         }
-        List<AudioPlayer> playerList = [
-        for (String i in loadAllArray)
-          AudioPlayer()
-        ];
-        List<AudioCache> cacheList = [
-          for (String i in loadAllArray)
-            AudioCache(fixedPlayer: playerList[loadAllArray.indexOf(i)], prefix: 'sounds/')
-        ];
-        for (AudioCache j in cacheList) {
-          j.load(loadAllArray[cacheList.indexOf(j)]);
-        }
-        for (String i in loadAllArray) {
-          int place = loadAllArray.indexOf(i);
-          if (place == 0) {
-            cacheList[0].play(i);
-          } else {
-            playerList[place - 1].onPlayerCompletion.listen((event) {
-              cacheList[place].play(i);
-            });
-          }
+        print(loadAllArray);
+        AudioCache player = new AudioCache(prefix: 'sounds2/');
+        player.loadAll(loadAllArray);
+        for (String j in loadAllArray) {
+          player.play(j);
         }
       };
     } else {
