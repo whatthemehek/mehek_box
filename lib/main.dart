@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audio_cache.dart';
 
+part 'data.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -86,7 +88,7 @@ var _currentList = [];
 int _howFull = 0;
 
 
-final n = 3.0; // Scale factor for scroll blocks
+//final n = 3.0; // Scale factor for scroll blocks
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
