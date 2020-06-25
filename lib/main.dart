@@ -9,76 +9,50 @@ void main() {
 }
 
 class Data {
-  List<Colors> listOfColors;
-  List<Colors> listOfDarkColors;
+  List<Color> listOfColors;
+  List<Color> listOfDarkColors;
   List<int> listOfWidths;
   List<int> listOfDurations;
   List<String> listOfNames;
-  List<List<int>> rhythmArray;
+  List<List<int>> rhythmArrays;
   List<String> labelArray;
   List<double> listOfScales;
+  String boxType;
+  List<Container> listOfContainers;
 
   Data ({this.listOfColors, this.listOfDarkColors, this.listOfWidths,
-    this.listOfDurations, this.listOfNames, this.rhythmArray,
-    this.labelArray, this.listOfScales});
+    this.listOfDurations, this.listOfNames, this.rhythmArrays,
+    this.labelArray, this.listOfScales, this.boxType, this.listOfContainers});
 }
 
-final listOfColors = [Colors.red, Colors.orange, Colors.yellow, Colors.green, Colors.blue,
-                      Colors.brown, Colors.deepOrange[800], Colors.amber[600],
-                      Colors.purple, Colors.grey, Colors.pink, Colors.tealAccent[100],
-                      Colors.lightGreenAccent[100], Colors.lightGreenAccent[400], Colors.indigo,
-                      Colors.black];
-final listOfDarkColors = [Colors.red[900], Colors.orange[900], Colors.yellow[900], Colors.green[900], Colors.blue[900],
-                          Colors.brown[900], Colors.red[900], Colors.amber[900],
-                          Colors.purple[900], Colors.grey[800], Colors.pink[900], Colors.tealAccent[400],
-                          Colors.lightGreenAccent[700], Colors.lightGreen[700], Colors.indigo[900],
-                          Colors.white];
-final listOfWidths = [96, 72, 48, 36, 24, 18, 12, 6, 24, 24, 24, 24, 24, 24, 24, 24];
-final listOfDurations = [16, 12, 8, 6, 4, 3, 2, 1, 4, 4, 4, 4, 4, 4, 4, 4];
-final listOfNames = ['whole', 'dotHalf', 'half', 'dotQuarter', 'quarter',
-                    'dotEighth', 'eighth', 'sixteenth',
-                    'oneEAndA', 'oneAnd', 'oneAndA', 'oneEAnd', 'eAndA', 'oneEA', 'oneA', 'quarterRest'];
-final rhythmArrays = [[16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16], //1: Whole
-                      [12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12], //2: Dot Half
-                      [8, 8, 8, 8, 8, 8, 8, 8], //3: Half
-                      [6, 6, 6, 6, 6, 6], //4: Dot Quarter
-                      [4, 4, 4, 4], //5: Quarter
-                      [3, 3, 3], //6: Dot Eighth
-                      [2, 2], //Eighth
-                      [1], //Sixteenth
-                      [1, 1, 1, 1], //One E And A
-                      [2, 2, 2, 2], //One And
-                      [2, 2, 1, 1], //One And A
-                      [1, 1, 2, 2], //One E And
-                      [0, 1, 1, 1], //E And A
-                      [1, 2, 2, 1], //One E A
-                      [3, 3, 3, 1], //One A
-                      [0, 0, 0, 0], //Quarter Rest
-                      ];
-final labelArray = ['w', 'd', 'h', 'j', ' q', 'i', 'e', 's', 'Y', 'n', 'm', 'M', 'S³', '¾', 'o', 'Q'];
-final listOfScales = [4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 5.0];
-final List<int> measureRhythm = [];
-final listOfContainers = [
-  for (var j in listOfNames)
+final measureData = Data(listOfColors: measureListOfColors, listOfDarkColors: measureListOfDarkColors, listOfWidths: measureListOfWidths,
+                          listOfDurations: measureListOfDurations, listOfNames: measureListOfNames, rhythmArrays: measureRhythmArrays,
+                          labelArray: measureLabelArray, listOfScales: measureListOfScales, boxType: 'Measure',
+                          listOfContainers: measureListOfContainers);
+
+
+final List<int> boxRhythm = [];
+final measureListOfContainers = [
+  for (var j in measureListOfNames)
     Container(
       child: Center (
         child: Text (
-          labelArray[listOfNames.indexOf(j)],
+          measureLabelArray[measureListOfNames.indexOf(j)],
           textAlign: TextAlign.center,
           style: TextStyle(
               fontFamily: 'Musisync',
-              color: listOfDarkColors[listOfNames.indexOf(j)],
+              color: measureListOfDarkColors[measureListOfNames.indexOf(j)],
           ),
-          textScaleFactor: listOfScales[listOfNames.indexOf(j)],
+          textScaleFactor: measureListOfScales[measureListOfNames.indexOf(j)],
 
         ),
       ),
-      width: (listOfWidths[listOfNames.indexOf(j)] * n),
+      width: (measureListOfWidths[measureListOfNames.indexOf(j)] * n),
       height: 36 * n,
       decoration: BoxDecoration(
-        color: listOfColors[listOfNames.indexOf(j)],
+        color: measureListOfColors[measureListOfNames.indexOf(j)],
         border: Border.all(
-          color: listOfDarkColors[listOfNames.indexOf(j)],
+          color: measureListOfDarkColors[measureListOfNames.indexOf(j)],
           width: 1,
         ),
       ),
@@ -99,69 +73,39 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.white,
       ),
-      home: Scaffold(
-          appBar: AppBar(
-            title: Text('Measure Box'),
-          ),
-          body: Column (
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container (
-                    margin: EdgeInsets.symmetric(vertical: 20.0),
-                    height: 36*n,
-                    child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          for (var i in listOfContainers)
-                            Draggable<Color>(
-                              child: i,
-                              feedback: Material (
-                                child: i,
-                              ),
-                              childWhenDragging: i,
-                              data: listOfColors[(listOfContainers.indexOf(i))],
-                              affinity: Axis.vertical,
-                            )
-                        ]
-                    )
-                ),
-                Expanded(
-                    child: Container(
-                        color: Color(0xffe4e1),
-                        child: BackgroundWidget(),
-                    )
-                ),
-              ]// Children
-          ),
-      ),
+      home: FirstPage(boxData: measureData),
     );
   }
 }
 class BackgroundWidget extends StatefulWidget {
   @override
-  BackgroundWidget({Key key}) : super(key: key);
-  _BackgroundWidgetState createState() => _BackgroundWidgetState();
+  //BackgroundWidget({Key key}) : super(key: key);
+  final Data boxData;
+  BackgroundWidget({this.boxData});
+  _BackgroundWidgetState createState() => _BackgroundWidgetState(boxData: boxData);
   Widget build(BuildContext context) {
 
   }
 }
 class _BackgroundWidgetState extends State<BackgroundWidget> {
+  final Data boxData;
+  _BackgroundWidgetState({this.boxData});
   @override
   bool successfulDrop;
   Widget build(BuildContext context) {
     return DragTarget<int>(
       builder: (BuildContext context, List<int> incoming, List rejected) {
         if (successfulDrop == true) {
-          return MeasureBoxWidget();
+          return MeasureBoxWidget(boxData: boxData);
         } else {
-          return MeasureBoxWidget();
+          return MeasureBoxWidget(boxData: boxData);
         }
       },
 
       onAccept: (data) {
         setState(() {
           successfulDrop = true;
-          _howFull = _howFull - listOfDurations[listOfColors.indexOf(_currentList[data])];
+          _howFull = _howFull - boxData.listOfDurations[boxData.listOfColors.indexOf(_currentList[data])];
           _currentList.removeAt(data);
         });
       },
@@ -176,9 +120,11 @@ class _BackgroundWidgetState extends State<BackgroundWidget> {
 ////
 ////
 class MeasureBoxWidget extends StatefulWidget {
+  final Data boxData;
+  MeasureBoxWidget({this.boxData});
   @override
-  MeasureBoxWidget({Key key}) : super(key: key);
-  _MBWidgetState createState() => _MBWidgetState();
+  //MeasureBoxWidget({Key key}) : super(key: key);
+  _MBWidgetState createState() => _MBWidgetState(boxData: boxData);
   Widget build(BuildContext context) {
 
   }
@@ -188,6 +134,8 @@ class MeasureBoxWidget extends StatefulWidget {
 final AudioCache player = new AudioCache(prefix: 'sounds2/');
 
 class _MBWidgetState extends State<MeasureBoxWidget> {
+  final Data boxData;
+  _MBWidgetState({this.boxData});
   int _maxFull = 16;
   @override
   bool successfulDrop;
@@ -197,16 +145,16 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
     isButtonEnabled = (_howFull == _maxFull);
     if (isButtonEnabled) {
       return () {
-        measureRhythm.clear();
+        boxRhythm.clear();
         for (var l in _currentList) {
-          measureRhythm.addAll(rhythmArrays[listOfColors.indexOf(l)]);
+          boxRhythm.addAll(boxData.rhythmArrays[boxData.listOfColors.indexOf(l)]);
         }
         player.clearCache();
         List<String> loadAllArray = [];
-        for (int i = 0; i < measureRhythm.length; i++) {
-          loadAllArray.add('Index'+ (i + 1).toString() + 'Length' + measureRhythm[i].toString() + '.wav');
-          if (measureRhythm[i] != 0) {
-            i = i + measureRhythm[i] - 1;
+        for (int i = 0; i < boxRhythm.length; i++) {
+          loadAllArray.add('Index'+ (i + 1).toString() + 'Length' + boxRhythm[i].toString() + '.wav');
+          if (boxRhythm[i] != 0) {
+            i = i + boxRhythm[i] - 1;
           }
         }
         player.load('metronome.mp3');
@@ -250,9 +198,9 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
                               children: [
                                 for (var i in _currentList)
                                   Draggable(
-                                    child: listOfContainers[listOfColors.indexOf(i)],
+                                    child: boxData.listOfContainers[boxData.listOfColors.indexOf(i)],
                                     feedback: Material (
-                                      child: listOfContainers[listOfColors.indexOf(i)],
+                                      child: boxData.listOfContainers[boxData.listOfColors.indexOf(i)],
                                     ),
                                     childWhenDragging: null,
                                     data: (_currentList.indexOf(i)),
@@ -302,8 +250,8 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
                                   children: [
                                     for (var i in _currentList)
                                       Draggable(
-                                        child: listOfContainers[listOfColors.indexOf(i)],
-                                        feedback: listOfContainers[listOfColors.indexOf(i)],
+                                        child: boxData.listOfContainers[boxData.listOfColors.indexOf(i)],
+                                        feedback: boxData.listOfContainers[boxData.listOfColors.indexOf(i)],
                                         childWhenDragging: null,
                                         data: (_currentList.indexOf(i)),
                                       ),
@@ -328,12 +276,12 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
         }
       },
 
-      onWillAccept: (data) => listOfDurations[listOfColors.indexOf(data)] + _howFull <= _maxFull,
+      onWillAccept: (data) => boxData.listOfDurations[boxData.listOfColors.indexOf(data)] + _howFull <= _maxFull,
 
       onAccept: (data) {
         setState(() {
           successfulDrop = true;
-          _howFull = listOfDurations[listOfColors.indexOf(data)] + _howFull;
+          _howFull = boxData.listOfDurations[boxData.listOfColors.indexOf(data)] + _howFull;
           _currentList.add(data);
         });
       },
@@ -348,11 +296,45 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
 
 
 class FirstPage extends StatelessWidget{
-  final Data data;
-  FirstPage({this.data});
+  final Data boxData;
+  FirstPage({this.boxData});
 
   @override
   Widget build(BuildContext context) {
-
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(boxData.boxType+' Box'),
+      ),
+      body: Column (
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container (
+                margin: EdgeInsets.symmetric(vertical: 20.0),
+                height: 36*n,
+                child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      for (var i in boxData.listOfContainers)
+                        Draggable<Color>(
+                          child: i,
+                          feedback: Material (
+                            child: i,
+                          ),
+                          childWhenDragging: i,
+                          data: boxData.listOfColors[(boxData.listOfContainers.indexOf(i))],
+                          affinity: Axis.vertical,
+                        )
+                    ]
+                )
+            ),
+            Expanded(
+                child: Container(
+                  color: Color(0xffe4e1),
+                  child: BackgroundWidget(boxData: boxData),
+                )
+            ),
+          ]// Children
+      ),
+    );
   }
 }
