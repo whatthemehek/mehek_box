@@ -308,31 +308,105 @@ class FirstPage extends StatelessWidget{
       ),
       drawer: Drawer (
         child: ListView(
-          // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
-              child: Text('Drawer Header'),
+              child: Text('Menu'),
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Colors.white,
               ),
             ),
             ListTile(
-              title: Text('Item 1'),
+              title: Text('Measure Box (4/4)'),
               onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SecondPage(boxData: measureData)),
+                );
               },
             ),
             ListTile(
-              title: Text('Item 2'),
+              title: Text('Beat Box (Single Quarter Length)'),
               onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SecondPage(boxData: beatData)),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SecondPage extends StatelessWidget{
+  final Data boxData;
+  SecondPage({this.boxData});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(boxData.boxType+' Box'),
+      ),
+      body: Column (
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container (
+                margin: EdgeInsets.symmetric(vertical: 20.0),
+                height: (boxData.boxHeight - 4)*n,
+                child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      for (var i in boxData.listOfContainers)
+                        Draggable<Color>(
+                          child: i,
+                          feedback: Material (
+                            child: i,
+                          ),
+                          childWhenDragging: i,
+                          data: boxData.listOfColors[(boxData.listOfContainers.indexOf(i))],
+                          affinity: Axis.vertical,
+                        )
+                    ]
+                )
+            ),
+            Expanded(
+                child: Container(
+                  color: Color(0xffe4e1),
+                  child: BackgroundWidget(boxData: boxData),
+                )
+            ),
+          ]// Children
+      ),
+      drawer: Drawer (
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text('Menu'),
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+            ),
+            ListTile(
+              title: Text('Measure Box (4/4)'),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FirstPage(boxData: measureData)),
+                );
+              },
+            ),
+            ListTile(
+              title: Text('Beat Box (Single Quarter Length)'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FirstPage(boxData: beatData)),
+                );
               },
             ),
           ],
