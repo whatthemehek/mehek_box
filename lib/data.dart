@@ -137,3 +137,71 @@ final beatBoxWidth = 84;
 final beatMaxFull = 4;
 
 /*--------------------------------ThreeFour Data-----------------------------------*/
+final threeFourData = Data(listOfColors: threeFourListOfColors, listOfDarkColors: threeFourListOfDarkColors, listOfWidths: threeFourListOfWidths,
+    listOfDurations: threeFourListOfDurations, listOfNames: threeFourListOfNames, rhythmArrays: threeFourRhythmArrays,
+    labelArray: threeFourLabelArray, listOfScales: threeFourListOfScales, boxType: '3/4',
+    listOfContainers: threeFourListOfContainers, boxHeight: threeFourBoxHeight, boxWidth: threeFourBoxWidth,
+    maxFull: threeFourMaxFull);
+
+final threeFourListOfColors = [Colors.orange, Colors.yellow, Colors.green, Colors.blue,
+  Colors.brown, Colors.deepOrange[800], Colors.amber[600],
+  Colors.purple, Colors.grey, Colors.pink, Colors.tealAccent[100],
+  Colors.lightGreenAccent[100], Colors.lightGreenAccent[400], Colors.indigo,
+  Colors.black];
+final threeFourListOfDarkColors = [Colors.orange[900], Colors.yellow[900], Colors.green[900], Colors.blue[900],
+  Colors.brown[900], Colors.red[900], Colors.amber[900],
+  Colors.purple[900], Colors.grey[800], Colors.pink[900], Colors.tealAccent[400],
+  Colors.lightGreenAccent[700], Colors.lightGreen[700], Colors.indigo[900],
+  Colors.white];
+final threeFourListOfWidths = [72, 48, 36, 24, 18, 12, 6, 24, 24, 24, 24, 24, 24, 24, 24];
+final threeFourListOfDurations = [12, 8, 6, 4, 3, 2, 1, 4, 4, 4, 4, 4, 4, 4, 4];
+final threeFourListOfNames = ['dotHalf', 'half', 'dotQuarter', 'quarter',
+  'dotEighth', 'eighth', 'sixteenth',
+  'oneEAndA', 'oneAnd', 'oneAndA', 'oneEAnd', 'eAndA', 'oneEA', 'oneA', 'quarterRest'];
+final threeFourRhythmArrays = [[12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12], //2: Dot Half
+  [8, 8, 8, 8, 8, 8, 8, 8], //3: Half
+  [6, 6, 6, 6, 6, 6], //4: Dot Quarter
+  [4, 4, 4, 4], //5: Quarter
+  [3, 3, 3], //6: Dot Eighth
+  [2, 2], //7: Eighth
+  [1], //8: Sixteenth
+  [1, 1, 1, 1], //9: One E And A
+  [2, 2, 2, 2], //10: One And
+  [2, 2, 1, 1], //11: One And A
+  [1, 1, 2, 2], //12: One E And
+  [0, 1, 1, 1], //13: E And A
+  [1, 2, 2, 1], //14: One E A
+  [3, 3, 3, 1], //15: One A
+  [0, 0, 0, 0], //16: Quarter Rest
+];
+final threeFourLabelArray = ['d', 'h', 'j', ' q', 'i', 'e', 's', 'Y', 'n', 'm', 'M', 'S³', '¾', 'o', 'Q'];
+final threeFourListOfScales = [4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 5.0];
+final threeFourListOfContainers = [
+  for (var j in threeFourListOfNames)
+    Container(
+      child: Center (
+        child: Text (
+          threeFourLabelArray[threeFourListOfNames.indexOf(j)],
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: 'Musisync',
+            color: threeFourListOfDarkColors[threeFourListOfNames.indexOf(j)],
+          ),
+          textScaleFactor: threeFourListOfScales[threeFourListOfNames.indexOf(j)],
+
+        ),
+      ),
+      width: (threeFourListOfWidths[threeFourListOfNames.indexOf(j)] * n),
+      height: (threeFourBoxHeight - 4) * n,
+      decoration: BoxDecoration(
+        color: threeFourListOfColors[threeFourListOfNames.indexOf(j)],
+        border: Border.all(
+          color: threeFourListOfDarkColors[threeFourListOfNames.indexOf(j)],
+          width: 1,
+        ),
+      ),
+    )
+];
+final threeFourBoxHeight = 40;
+final threeFourBoxWidth = 76;
+final threeFourMaxFull = 12;

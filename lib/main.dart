@@ -334,6 +334,15 @@ class FirstPage extends StatelessWidget{
                 );
               },
             ),
+            ListTile(
+              title: Text('3/4 Box'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SecondPage(boxData: threeFourData)),
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -406,6 +415,15 @@ class SecondPage extends StatelessWidget{
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => FirstPage(boxData: beatData)),
+                );
+              },
+            ),
+            ListTile(
+              title: Text('3/4 Box'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FirstPage(boxData: threeFourData)),
                 );
               },
             ),
