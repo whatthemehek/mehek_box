@@ -1,11 +1,24 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audio_cache.dart';
-import 'package:path_provider/path_provider.dart';
 
 void main() {
   runApp(MyApp());
+}
+
+class Data {
+  List<Colors> listOfColors;
+  List<Colors> listOfDarkColors;
+  List<int> listOfWidths;
+  List<int> listOfDurations;
+  List<String> listOfNames;
+  List<List<int>> rhythmArray;
+  List<String> labelArray;
+  List<double> listOfScales;
+
+  Data ({this.listOfColors, this.listOfDarkColors, this.listOfWidths,
+    this.listOfDurations, this.listOfNames, this.rhythmArray,
+    this.labelArray, this.listOfScales});
 }
 
 final listOfColors = [Colors.red, Colors.orange, Colors.yellow, Colors.green, Colors.blue,
@@ -80,7 +93,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Mehek Box',
       theme: ThemeData(
         primaryColor: Colors.white,
       ),
@@ -330,3 +343,14 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
   }
 }
 
+
+
+class FirstPage extends StatelessWidget{
+  final Data data;
+  FirstPage({this.data});
+
+  @override
+  Widget build(BuildContext context) {
+
+  }
+}
