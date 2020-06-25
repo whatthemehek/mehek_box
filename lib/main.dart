@@ -19,45 +19,17 @@ class Data {
   List<double> listOfScales;
   String boxType;
   List<Container> listOfContainers;
+  int boxHeight;
+  int boxWidth;
+  int maxFull;
 
   Data ({this.listOfColors, this.listOfDarkColors, this.listOfWidths,
     this.listOfDurations, this.listOfNames, this.rhythmArrays,
-    this.labelArray, this.listOfScales, this.boxType, this.listOfContainers});
+    this.labelArray, this.listOfScales, this.boxType, this.listOfContainers,
+    this.boxHeight, this.boxWidth, this.maxFull});
 }
 
-final measureData = Data(listOfColors: measureListOfColors, listOfDarkColors: measureListOfDarkColors, listOfWidths: measureListOfWidths,
-                          listOfDurations: measureListOfDurations, listOfNames: measureListOfNames, rhythmArrays: measureRhythmArrays,
-                          labelArray: measureLabelArray, listOfScales: measureListOfScales, boxType: 'Measure',
-                          listOfContainers: measureListOfContainers);
-
-
 final List<int> boxRhythm = [];
-final measureListOfContainers = [
-  for (var j in measureListOfNames)
-    Container(
-      child: Center (
-        child: Text (
-          measureLabelArray[measureListOfNames.indexOf(j)],
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontFamily: 'Musisync',
-              color: measureListOfDarkColors[measureListOfNames.indexOf(j)],
-          ),
-          textScaleFactor: measureListOfScales[measureListOfNames.indexOf(j)],
-
-        ),
-      ),
-      width: (measureListOfWidths[measureListOfNames.indexOf(j)] * n),
-      height: 36 * n,
-      decoration: BoxDecoration(
-        color: measureListOfColors[measureListOfNames.indexOf(j)],
-        border: Border.all(
-          color: measureListOfDarkColors[measureListOfNames.indexOf(j)],
-          width: 1,
-        ),
-      ),
-    )
-];
 var _currentList = [];
 int _howFull = 0;
 
@@ -73,7 +45,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.white,
       ),
-      home: FirstPage(boxData: measureData),
+      home: FirstPage(boxData: beatData),
     );
   }
 }
@@ -136,13 +108,12 @@ final AudioCache player = new AudioCache(prefix: 'sounds2/');
 class _MBWidgetState extends State<MeasureBoxWidget> {
   final Data boxData;
   _MBWidgetState({this.boxData});
-  int _maxFull = 16;
   @override
   bool successfulDrop;
   bool isButtonEnabled;
   bool complete = false;
   Function _enableButton() {
-    isButtonEnabled = (_howFull == _maxFull);
+    isButtonEnabled = (_howFull == boxData.maxFull);
     if (isButtonEnabled) {
       return () {
         boxRhythm.clear();
@@ -184,8 +155,8 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
                       ),
                     ),
                     child: Container (
-                        height: 40*n,
-                        width: 100*n,
+                        height: boxData.boxHeight*n,
+                        width: boxData.boxWidth*n,
                         decoration: BoxDecoration(
                           color: Color(0xc9c9c9),
                           border: Border.all(
@@ -236,8 +207,8 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
                           ),
                         ),
                         child: Container (
-                            height: 40*n,
-                            width: 100*n,
+                            height: boxData.boxHeight*n,
+                            width: boxData.boxWidth*n,
                             decoration: BoxDecoration(
                               color: Color(0xc9c9c9),
                               border: Border.all(
@@ -276,7 +247,7 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
         }
       },
 
-      onWillAccept: (data) => boxData.listOfDurations[boxData.listOfColors.indexOf(data)] + _howFull <= _maxFull,
+      onWillAccept: (data) => boxData.listOfDurations[boxData.listOfColors.indexOf(data)] + _howFull <= boxData.maxFull,
 
       onAccept: (data) {
         setState(() {
@@ -310,7 +281,7 @@ class FirstPage extends StatelessWidget{
           children: [
             Container (
                 margin: EdgeInsets.symmetric(vertical: 20.0),
-                height: 36*n,
+                height: (boxData.boxHeight - 4)*n,
                 child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: [
@@ -334,6 +305,38 @@ class FirstPage extends StatelessWidget{
                 )
             ),
           ]// Children
+      ),
+      drawer: Drawer (
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text('Drawer Header'),
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+            ),
+            ListTile(
+              title: Text('Item 1'),
+              onTap: () {
+                // Update the state of the app
+                // ...
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text('Item 2'),
+              onTap: () {
+                // Update the state of the app
+                // ...
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
