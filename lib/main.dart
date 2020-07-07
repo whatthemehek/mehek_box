@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.white,
       ),
-      home: FirstPage(boxData: beatData),
+      home: FirstPage(boxData: measureData),
     );
   }
 }
@@ -103,7 +103,7 @@ class MeasureBoxWidget extends StatefulWidget {
 }
 
 
-final AudioCache player = new AudioCache(prefix: 'sounds2/');
+final AudioCache player = new AudioCache(prefix: 'sounds/');
 
 class _MBWidgetState extends State<MeasureBoxWidget> {
   final Data boxData;
@@ -123,7 +123,7 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
         player.clearCache();
         List<String> loadAllArray = [];
         for (int i = 0; i < boxRhythm.length; i++) {
-          loadAllArray.add('Index'+ (i + 1).toString() + 'Length' + boxRhythm[i].toString() + '.wav');
+          loadAllArray.add('Index'+ (i + 1).toString() + 'Length' + boxRhythm[i].toString() + '.mp3');
           if (boxRhythm[i] != 0) {
             i = i + boxRhythm[i] - 1;
           }
@@ -285,16 +285,16 @@ class FirstPage extends StatelessWidget{
                 child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: [
-                      for (var i in boxData.listOfContainers)
-                        Draggable<Color>(
-                          child: i,
-                          feedback: Material (
-                            child: i,
-                          ),
-                          childWhenDragging: i,
-                          data: boxData.listOfColors[(boxData.listOfContainers.indexOf(i))],
-                          affinity: Axis.vertical,
-                        )
+                      for (var index in boxData.listOfContainers)
+                      Draggable<Color>(
+                        child: index,
+                        feedback: Material(
+                          child: index,
+                        ),
+                        childWhenDragging: index,
+                        data: boxData.listOfColors[boxData.listOfContainers.indexOf(index)],
+                        affinity: Axis.vertical,
+                      )
                     ]
                 )
             ),
