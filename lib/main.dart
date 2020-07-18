@@ -12,7 +12,7 @@ void main() {
 
 
 final List<int> boxRhythm = [];
-final List<int> vibrateRhythm = [];
+final List<int> vibrateRhythm = [250];
 var _currentList = [];
 int _howFull = 0;
 
@@ -90,8 +90,20 @@ final AudioCache player = new AudioCache(prefix: 'sounds/');
 
 void _vibrate() async {
   if (await Vibration.hasVibrator() && await Vibration.hasCustomVibrationsSupport()) {
-
-    Vibration.vibrate(pattern: [250, 990, 10, 990, 10, 990, 10, 990]);
+    vibrateRhythm.clear();
+    int rest = 250;
+    for (int i = 0; i < boxRhythm.length; i++) {
+      if (boxRhythm[i] != 0) {
+        vibrateRhythm.add(rest + 10);
+        vibrateRhythm.add(boxRhythm[i]*250 - 10);
+        i += boxRhythm[i] - 1;
+        rest = 0;
+      } else {
+        rest += 250;
+      }
+    }
+    Vibration.vibrate(pattern: vibrateRhythm);
+    print(vibrateRhythm);
   }
 }
 
