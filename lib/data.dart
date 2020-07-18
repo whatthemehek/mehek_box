@@ -2,6 +2,28 @@ part of 'main.dart';
 
 final n = 3.0;
 
+//general data class
+class Data {
+  List<Color> listOfColors;
+  List<Color> listOfDarkColors;
+  List<int> listOfWidths;
+  List<int> listOfDurations;
+  List<String> listOfNames;
+  List<List<int>> rhythmArrays;
+  List<String> labelArray;
+  List<double> listOfScales;
+  String boxType;
+  List<Container> listOfContainers;
+  int boxHeight;
+  int boxWidth;
+  int maxFull;
+
+  Data ({this.listOfColors, this.listOfDarkColors, this.listOfWidths,
+    this.listOfDurations, this.listOfNames, this.rhythmArrays,
+    this.labelArray, this.listOfScales, this.boxType, this.listOfContainers,
+    this.boxHeight, this.boxWidth, this.maxFull});
+}
+
 /*--------------------------------Measure Data-----------------------------------*/
 final measureData = Data(listOfColors: measureListOfColors, listOfDarkColors: measureListOfDarkColors, listOfWidths: measureListOfWidths,
     listOfDurations: measureListOfDurations, listOfNames: measureListOfNames, rhythmArrays: measureRhythmArrays,

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audio_cache.dart';
+import 'package:vibration/vibration.dart';
 
 part 'data.dart';
 
@@ -8,28 +9,10 @@ void main() {
   runApp(MyApp());
 }
 
-class Data {
-  List<Color> listOfColors;
-  List<Color> listOfDarkColors;
-  List<int> listOfWidths;
-  List<int> listOfDurations;
-  List<String> listOfNames;
-  List<List<int>> rhythmArrays;
-  List<String> labelArray;
-  List<double> listOfScales;
-  String boxType;
-  List<Container> listOfContainers;
-  int boxHeight;
-  int boxWidth;
-  int maxFull;
 
-  Data ({this.listOfColors, this.listOfDarkColors, this.listOfWidths,
-    this.listOfDurations, this.listOfNames, this.rhythmArrays,
-    this.labelArray, this.listOfScales, this.boxType, this.listOfContainers,
-    this.boxHeight, this.boxWidth, this.maxFull});
-}
 
 final List<int> boxRhythm = [];
+final List<int> vibrateRhythm = [];
 var _currentList = [];
 int _howFull = 0;
 
@@ -105,6 +88,13 @@ class MeasureBoxWidget extends StatefulWidget {
 
 final AudioCache player = new AudioCache(prefix: 'sounds/');
 
+void _vibrate() async {
+  if (await Vibration.hasVibrator() && await Vibration.hasCustomVibrationsSupport()) {
+
+    Vibration.vibrate(pattern: [250, 990, 10, 990, 10, 990, 10, 990]);
+  }
+}
+
 class _MBWidgetState extends State<MeasureBoxWidget> {
   final Data boxData;
   _MBWidgetState({this.boxData});
@@ -131,6 +121,7 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
         player.load('metronome.mp3');
         player.loadAll(loadAllArray);
         player.play('metronome.mp3');
+        _vibrate();
         for (String j in loadAllArray) {
           player.play(j);
         }
