@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
         '/measurebox': (context) => FirstPage(boxData: measureData),
         '/beatbox': (context) => FirstPage(boxData: beatData),
         '/threefourbox': (context) => FirstPage(boxData: threeFourData),
+        '/privacy': (context) => PrivacyPolicy(),
       },
     );
   }
@@ -343,6 +344,67 @@ class FirstPage extends StatelessWidget{
               onTap: () {
                 boxRhythm.clear();
                 Navigator.pushNamed(context, '/threefourbox');
+              },
+            ),
+            ListTile(
+              title: Text('Privacy Policy'),
+              onTap: () {
+                boxRhythm.clear();
+                Navigator.pushNamed(context, '/privacy');
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+class PrivacyPolicy extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Privacy Policy'),
+      ),
+      body: Text(
+        'At the present (7/21/20), the Mehek Box app and webapp do not intake any user data, in any form.'
+      ),
+      drawer: Drawer (
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text('Menu'),
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+            ),
+            ListTile(
+              title: Text('Measure Box (4/4)'),
+              onTap: () {
+                boxRhythm.clear();
+                Navigator.pushNamed(context, '/measurebox');
+              },
+            ),
+            ListTile(
+              title: Text('Beat Box (Single Quarter Length)'),
+              onTap: () {
+                boxRhythm.clear();
+                Navigator.pushNamed(context, '/beatbox');
+              },
+            ),
+            ListTile(
+              title: Text('3/4 Box'),
+              onTap: () {
+                boxRhythm.clear();
+                Navigator.pushNamed(context, '/threefourbox');
+              },
+            ),
+            ListTile(
+              title: Text('Privacy Policy'),
+              onTap: () {
+                boxRhythm.clear();
+                Navigator.pushNamed(context, '/privacy');
               },
             ),
           ],
