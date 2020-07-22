@@ -28,7 +28,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.white,
       ),
-      home: FirstPage(boxData: measureData),
+      initialRoute: '/measurebox',
+      routes: {
+        '/measurebox': (context) => FirstPage(boxData: measureData),
+        '/beatbox': (context) => FirstPage(boxData: beatData),
+        '/threefourbox': (context) => FirstPage(boxData: threeFourData),
+      },
     );
   }
 }
@@ -322,112 +327,22 @@ class FirstPage extends StatelessWidget{
             ListTile(
               title: Text('Measure Box (4/4)'),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SecondPage(boxData: measureData)),
-                );
+                boxRhythm.clear();
+                Navigator.pushNamed(context, '/measurebox');
               },
             ),
             ListTile(
               title: Text('Beat Box (Single Quarter Length)'),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SecondPage(boxData: beatData)),
-                );
+                boxRhythm.clear();
+                Navigator.pushNamed(context, '/beatbox');
               },
             ),
             ListTile(
               title: Text('3/4 Box'),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SecondPage(boxData: threeFourData)),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class SecondPage extends StatelessWidget{
-  final Data boxData;
-  SecondPage({this.boxData});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(boxData.boxType+' Box'),
-      ),
-      body: Column (
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container (
-                margin: EdgeInsets.symmetric(vertical: 20.0),
-                height: (boxData.boxHeight - 4)*n,
-                child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      for (var i in boxData.listOfContainers)
-                        Draggable<Color>(
-                          child: i,
-                          feedback: Material (
-                            child: i,
-                          ),
-                          childWhenDragging: i,
-                          data: boxData.listOfColors[(boxData.listOfContainers.indexOf(i))],
-                          affinity: Axis.vertical,
-                        )
-                    ]
-                )
-            ),
-            Expanded(
-                child: Container(
-                  color: Color(0xffe4e1),
-                  child: BackgroundWidget(boxData: boxData),
-                )
-            ),
-          ]// Children
-      ),
-      drawer: Drawer (
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              child: Text('Menu'),
-              decoration: BoxDecoration(
-                color: Colors.white,
-              ),
-            ),
-            ListTile(
-              title: Text('Measure Box (4/4)'),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => FirstPage(boxData: measureData)),
-                );
-              },
-            ),
-            ListTile(
-              title: Text('Beat Box (Single Quarter Length)'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => FirstPage(boxData: beatData)),
-                );
-              },
-            ),
-            ListTile(
-              title: Text('3/4 Box'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => FirstPage(boxData: threeFourData)),
-                );
+                boxRhythm.clear();
+                Navigator.pushNamed(context, '/threefourbox');
               },
             ),
           ],
