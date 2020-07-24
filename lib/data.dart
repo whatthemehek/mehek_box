@@ -63,7 +63,7 @@ final measureRhythmArrays = [[16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16
   [3, 3, 3, 1], //15: One A
   [0, 0, 0, 0], //16: Quarter Rest
 ];
-final measureLabelArray = ['w', 'd', 'h', 'j', ' q', 'i', 'e', 's', 'Y', 'n', 'm', 'M', 'S³', '¾', 'o', 'Q'];
+final measureLabelArray = ['w', 'd', 'h', 'j', ' q', 'i', 'e', 's', 'y', 'n', 'm', 'M', 'S³', '¾', 'o', 'Q'];
 final measureListOfScales = [4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 5.0];
 final measureListOfContainers = [
   for (var j in measureListOfNames)
@@ -126,7 +126,7 @@ final beatRhythmArrays = [[4, 4, 4, 4], //1: Quarter
   [3, 3, 3, 1], //11: One A
   [0, 0, 0, 0], //12: Quarter Rest
 ];
-final beatLabelArray = [' q', 'i', 'e', 's', 'Y', 'n', 'm', 'M', 'S³', '¾', 'o', 'Q'];
+final beatLabelArray = [' q', 'i', 'e', 's', 'y', 'n', 'm', 'M', 'S³', '¾', 'o', 'Q'];
 final beatListOfScales = [4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 5.0];
 final beatListOfContainers = [
   for (var j in beatListOfNames)
@@ -196,7 +196,7 @@ final threeFourRhythmArrays = [[12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12],
   [3, 3, 3, 1], //15: One A
   [0, 0, 0, 0], //16: Quarter Rest
 ];
-final threeFourLabelArray = ['d', 'h', 'j', ' q', 'i', 'e', 's', 'Y', 'n', 'm', 'M', 'S³', '¾', 'o', 'Q'];
+final threeFourLabelArray = ['d', 'h', 'j', ' q', 'i', 'e', 's', 'y', 'n', 'm', 'M', 'S³', '¾', 'o', 'Q'];
 final threeFourListOfScales = [4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 5.0];
 final threeFourListOfContainers = [
   for (var j in threeFourListOfNames)

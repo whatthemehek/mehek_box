@@ -156,6 +156,7 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Center (
+                //Draws the box, with the right size
                 child: Container (
                     decoration: BoxDecoration(
                       border: Border.all(
@@ -173,6 +174,7 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
                             width: 2*n,
                           ),
                         ),
+                        // Draws the blocks currently in the box
                         child: Center (
                             child: Row(
                               children: [
@@ -273,7 +275,7 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
   }
 }
 
-
+//Compose Page
 
 class FirstPage extends StatelessWidget{
   final Data boxData;
