@@ -9,6 +9,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  flutter_launcher_icons: ^0.7.3
   audioplayers: ^0.15.1
   vibration: ^1.4.0
   flutter:
@@ -34,3 +35,7 @@ flutter:
     - assets/button-1.mp3
     - assets/sounds/
 
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/Mehek_Box_2-lanczos3.png"
