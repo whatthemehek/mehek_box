@@ -201,6 +201,7 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
                       color: Colors.blue,
                       disabledColor: Colors.grey,
                       onPressed: _enableButton(),
+                      tooltip: "Play Rhythm",
                   ),
               )
             ]
