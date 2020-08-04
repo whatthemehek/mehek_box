@@ -41131,12 +41131,12 @@ k=h.IU(m,C.b.aN(j,$.eu[m]))
 i=s.e[C.b.aN(j,$.eu[m])]
 n.push(M.by(g,Z.Va(!1,S.Vr(s.z[C.b.aN(j,$.eu[m])],i),C.a8,C.nJ,0,2,g,g,4,g,8,g,4,g,k,new V.aA(0,0,0,0),C.hC,g,g),g,g,g,g,(r-4)*3,g,g,g,l*3))}return M.by(g,T.Fu(H.a([new T.dT(C.a5,g,g,M.by(g,M.by(g,new T.dT(C.a5,g,g,T.Yr(n,C.hX,C.j6),g),g,g,p,g,r*3,g,g,g,q*3),g,g,t,g,g,g,g,g,g),g),M.by(g,B.w1(C.ai,C.aX,L.UJ(C.op),80,h.v2(),"Play Rhythm"),g,g,g,g,g,new V.aA(0,20,0,20),g,g,g)],o),C.h1),g,g,g,g,g,g,g,g,g)}else return B.Xl(new F.QE(h),new F.QF(h),new F.QG(),new F.QH(h),u.iO)}}
 F.QA.prototype={
-$0:function(){var t,s,r,q,p,o,n,m="metronome.mp3"
+$0:function(){var t,s,r,q,p,o,n,m="metronome.wav"
 C.b.sl($.bN,0)
 for(t=$.eu,s=t.length,r=this.a.d,q=0;q<t.length;t.length===s||(0,H.C)(t),++q){p=t[q]
 C.b.L($.bN,r.f[C.b.aN(r.a,p)])}$.Ww().a.ac(0)
 o=H.a([],u.s)
-for(n=0;n<$.bN.length;n=(!J.d($.bN[n],0)?n+$.bN[n]-1:n)+1)o.push("Index"+C.i.i(n+1)+"Length"+J.d4($.bN[n])+".mp3")
+for(n=0;n<$.bN.length;n=(!J.d($.bN[n],0)?n+$.bN[n]-1:n)+1)o.push("Index"+C.i.i(n+1)+"Length"+J.d4($.bN[n])+".wav")
 t=$.Ww()
 t.bw(0,m)
 t.r4(o)
