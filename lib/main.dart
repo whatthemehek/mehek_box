@@ -129,14 +129,14 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
         player.clearCache();
         List<String> loadAllArray = [];
         for (int i = 0; i < boxRhythm.length; i++) {
-          loadAllArray.add('Index'+ (i + 1).toString() + 'Length' + boxRhythm[i].toString() + '.mp3');
+          loadAllArray.add('Index'+ (i + 1).toString() + 'Length' + boxRhythm[i].toString() + '.wav');
           if (boxRhythm[i] != 0) {
             i = i + boxRhythm[i] - 1;
           }
         }
-        player.load('metronome.mp3');
+        player.load('metronome.wav');
         player.loadAll(loadAllArray);
-        player.play('metronome.mp3');
+        player.play('metronome.wav');
         _vibrate();
         for (String j in loadAllArray) {
           player.play(j);
