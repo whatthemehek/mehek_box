@@ -89,7 +89,7 @@ class MeasureBoxWidget extends StatefulWidget {
 }
 
 
-final AudioCache player = new AudioCache(prefix: 'sounds/');
+final AudioCache player = new AudioCache(prefix: 'sounds_wav/');
 
 void _vibrate() async {
   if (await Vibration.hasVibrator() && await Vibration.hasCustomVibrationsSupport()) {
