@@ -45377,7 +45377,7 @@ q=T.Uk(L.bw(q,A.jo(m,m,p[C.b.aN($.jY,r)],m,m,m,m,m,"Musisync",m,m,m,m,m,m,m,!0,m
 o=$.a_T[C.b.aN($.jY,r)]
 n=$.Wx()[C.b.aN($.jY,r)]
 l.push(M.by(m,q,m,m,S.ct(F.ke(p[C.b.aN($.jY,r)],1),m,m,n,m,m,C.D),m,108,m,m,m,o*3))}return l})
-t($,"a9P","Ww",function(){return new N.ud(P.r(u.N,u.Y),"sounds_wav/")})})();(function nativeSupport(){!function(){var t=function(a){var n={}
+t($,"a9P","Ww",function(){return new N.ud(P.r(u.N,u.Y),"sounds/")})})();(function nativeSupport(){!function(){var t=function(a){var n={}
 n[a]=1
 return Object.keys(hunkHelpers.convertToFastObject(n))[0]}
 v.getIsolateTag=function(a){return t("___dart_"+a+v.isolateTag)}
