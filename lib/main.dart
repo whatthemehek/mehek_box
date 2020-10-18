@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.white,
       ),
-      initialRoute: '/measure',
+      initialRoute: "/measure",
       routes: {
         '/measure': (context) => FirstPage(boxData: measureData),
         '/beat': (context) => FirstPage(boxData: beatData),
@@ -64,32 +64,46 @@ class _BackgroundWidgetState extends State<BackgroundWidget> {
   @override
 
   Widget build(BuildContext context) {
-    return Row (
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          for (int i = 0; i < howFullNums.length; i++)
-            Center (
-              child: DragTarget<int>
-                (builder: (BuildContext context, List<int> incoming, List rejected) {
-                if (successfulDropNums[i] == true) {
-                  return MeasureBoxWidget(boxData: boxData, measureNumber: 1 + i);
-                } else {
-                  return MeasureBoxWidget(boxData: boxData, measureNumber: 1 + i);
-                }
+    return Container (
+            child: DragTarget<List<int>>
+            (builder: (BuildContext context, List<List<int>> incoming, List rejected) {
+                return Column (
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Row (
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          for (int i = 0; i < howFullNums.length; i++)
+                            Center (
+                              child: MeasureBoxWidget(boxData: boxData, measureNumber: 1 + i),
+                            )
+                        ]
+                      ),
+                      Container (
+                        height: 200,
+                        width: MediaQuery.of(context).size.width,
+                        color: Colors.blue,
+                        child: Icon(
+                            Icons.delete_outline,
+                            color: Colors.white,
+                            size: 50.0,
+                        ),
+                      )
+                    ]
+                 );
               },
 
-                  onAccept: (data) {
-                    setState(() {
-                      successfulDropNums[i] = true;
-                      howFullNums[i] = howFullNums[i] - boxData.listOfDurations[boxData.listOfNames.indexOf(currentListNums[i][data])];
-                      currentListNums[i].removeAt(data);
-                    });
-                  },
-                  onLeave: (data) {
+              onAccept: (data) {
+                setState(() {
+                  successfulDropNums[data[1]] = true;
+                  howFullNums[data[1]] = howFullNums[data[1]] - boxData.listOfDurations[boxData.listOfNames.indexOf(currentListNums[data[1]][data[0]])];
+                  currentListNums[data[1]].removeAt(data[0]);
+                });
+              },
+              onLeave: (data) {
 
-                  }),
-            )
-        ]
+              }
+            ),
     );
   }
 }
@@ -268,7 +282,7 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
                                           child: boxData.listOfContainers[boxData.listOfNames.indexOf(i)],
                                         ),
                                         childWhenDragging: null,
-                                        data: (currentListNums[measureNumber - 1].indexOf(i)),
+                                        data: ([currentListNums[measureNumber - 1].indexOf(i), measureNumber - 1]),
                                       ),
                                   ],
                                 )
@@ -290,19 +304,25 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
           );
         },
 
-        onWillAccept: (data) => boxData.listOfDurations[boxData.listOfNames.indexOf(data)] + howFullNums[measureNumber - 1] <= boxData.maxFull,
-
+        onWillAccept: (data) {
+          if (data is String) {
+            return (boxData.listOfDurations[boxData.listOfNames.indexOf(data)] + howFullNums[measureNumber - 1] <= boxData.maxFull);
+          }
+          if (data is int) {
+            //
+          }
+          return false;
+        },
         onAccept: (data) {
           setState(() {
             isAccessible = false;
             howFullNums[measureNumber - 1] = boxData.listOfDurations[boxData.listOfNames.indexOf(data)] + howFullNums[measureNumber - 1];
             currentListNums[measureNumber - 1].add(data);
-            print(howFullNums[measureNumber - 1]);
           });
         },
         onLeave: (data) {
-
         },
+
 
       );
     }
@@ -383,57 +403,12 @@ class _FirstPageWidgetState extends State<FirstPage> {
               Expanded(
                   child: Container(
                     color: Color(0xffe4e1),
-                    child: MeasureBoxWidget(boxData: boxData, measureNumber: 1),
+                    child: BackgroundWidget(boxData: boxData),
                   )
               ),
             ]// Children
         ),
-        drawer: Drawer (
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              DrawerHeader(
-                child: Text('Menu'),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                ),
-              ),
-              ListTile(
-                title: Text('Measure Box'),
-                onTap: () {
-                  Navigator.pushNamed(context, '/measure');
-                },
-              ),
-              ListTile(
-                title: Text('Beat Box'),
-                onTap: () {
-                  Navigator.pushNamed(context, '/beat');
-                },
-              ),
-              ListTile(
-                title: Text('3/4 Box'),
-                onTap: () {
-                  Navigator.pushNamed(context, '/threeFour');
-                },
-              ),
-              ListTile(
-                title: Text('Privacy Policy'),
-                onTap: () {
-                  Navigator.pushNamed(context, '/privacy');
-                },
-              ),
-              SwitchListTile(
-                title: Text('Screen-reader Optimized'),
-                value: isAccessible,
-                onChanged: (bool value) {
-                  setState(() {
-                    isAccessible = value;
-                  });
-                },
-              )
-            ],
-          ),
-        ),
+        drawer: BoxDrawer(),
       );
     } else {
       return Scaffold(
@@ -492,52 +467,7 @@ class _FirstPageWidgetState extends State<FirstPage> {
               ),
             ]// Children
         ),
-        drawer: Drawer (
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              DrawerHeader(
-                child: Text('Menu'),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                ),
-              ),
-              ListTile(
-                title: Text('Measure Box'),
-                onTap: () {
-                  Navigator.pushNamed(context, '/measure');
-                },
-              ),
-              ListTile(
-                title: Text('Beat Box'),
-                onTap: () {
-                  Navigator.pushNamed(context, '/beat');
-                },
-              ),
-              ListTile(
-                title: Text('3/4 Box'),
-                onTap: () {
-                  Navigator.pushNamed(context, '/threeFour');
-                },
-              ),
-              ListTile(
-                title: Text('Privacy Policy'),
-                onTap: () {
-                  Navigator.pushNamed(context, '/privacy');
-                },
-              ),
-              SwitchListTile(
-                title: Text('Screen-reader Optimized'),
-                value: isAccessible,
-                onChanged: (bool value) {
-                  setState(() {
-                    isAccessible = value;
-                  });
-                },
-              )
-            ],
-          ),
-        ),
+        drawer: BoxDrawer(),
       );
     }
   }
@@ -553,6 +483,51 @@ class FirstPage extends StatefulWidget{
 
   }
 }
+
+class BoxDrawer extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: Text('Menu'),
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
+          ),
+          ListTile(
+            title: Text('Measure Box'),
+            onTap: () {
+              Navigator.pushNamed(context, '/measure');
+            },
+          ),
+          ListTile(
+            title: Text('Beat Box'),
+            onTap: () {
+              Navigator.pushNamed(context, '/beat');
+            },
+          ),
+          ListTile(
+            title: Text('3/4 Box'),
+            onTap: () {
+              Navigator.pushNamed(context, '/threeFour');
+            },
+          ),
+          ListTile(
+            title: Text('Privacy Policy'),
+            onTap: () {
+              Navigator.pushNamed(context, '/privacy');
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
 class PrivacyPolicy extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
@@ -563,43 +538,7 @@ class PrivacyPolicy extends StatelessWidget{
       body: Text(
           'At the present (7/21/20), the Mehek Box app and webapp do not intake any user data, in any form.'
       ),
-      drawer: Drawer (
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              child: Text('Menu'),
-              decoration: BoxDecoration(
-                color: Colors.white,
-              ),
-            ),
-            ListTile(
-              title: Text('Measure Box'),
-              onTap: () {
-                Navigator.pushNamed(context, '/measure');
-              },
-            ),
-            ListTile(
-              title: Text('Beat Box'),
-              onTap: () {
-                Navigator.pushNamed(context, '/beat');
-              },
-            ),
-            ListTile(
-              title: Text('3/4 Box'),
-              onTap: () {
-                Navigator.pushNamed(context, '/threeFour');
-              },
-            ),
-            ListTile(
-              title: Text('Privacy Policy'),
-              onTap: () {
-                Navigator.pushNamed(context, '/privacy');
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: BoxDrawer(),
     );
   }
 }

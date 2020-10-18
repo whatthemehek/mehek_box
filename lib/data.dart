@@ -2,6 +2,7 @@ part of 'main.dart';
 
 final n = 3.0;
 
+
 //general data class
 class Data {
   List<Color> listOfColors;
