@@ -2,6 +2,17 @@ part of 'main.dart';
 
 final n = 3.0;
 
+final List<List<int>> boxRhythmNums = [[], [], [], []];
+final List<List<int>> vibrateRhythmNums = [[250], [250], [250], [250]];
+
+
+final List<int> howFullNums = [0];
+
+var currentListNums = [[], [], [], []];
+var isAccessible = false;
+int currentMeasureNum = 1;
+
+List<bool> successfulDropNums = [null, null, null, null];
 
 //general data class
 class Data {
