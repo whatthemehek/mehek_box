@@ -11,7 +11,7 @@ void main() {
   runApp(MyApp());
 }
 
-final List<List<int>> boxRhythmNums = [[], [], [], [],];
+final List<List<int>> boxRhythmNums = [[], [], [], []];
 final List<List<int>> vibrateRhythmNums = [[250], [250], [250], [250]];
 
 
@@ -19,6 +19,7 @@ final List<int> howFullNums = [0];
 
 var currentListNums = [[], [], [], []];
 var isAccessible = false;
+int currentMeasureNum = 1;
 
 
 
@@ -178,7 +179,6 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
     if (isAccessible) {
       return Container(
           child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Center(
                   //Draws the box, with the right size
@@ -237,7 +237,6 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
       return DragTarget<String>(
         builder: (BuildContext context, List<String> incoming, List rejected) {
           return Column (
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Center (
                   //Draws the box, with the right size
@@ -296,11 +295,9 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
         onAccept: (data) {
           setState(() {
             isAccessible = false;
-            print(data);
-            print(boxData.listOfNames.indexOf(data));
-            print(boxData.listOfDurations[boxData.listOfNames.indexOf(data)]);
             howFullNums[measureNumber - 1] = boxData.listOfDurations[boxData.listOfNames.indexOf(data)] + howFullNums[measureNumber - 1];
             currentListNums[measureNumber - 1].add(data);
+            print(howFullNums[measureNumber - 1]);
           });
         },
         onLeave: (data) {
@@ -336,6 +333,7 @@ class _FirstPageWidgetState extends State<FirstPage> {
         return () {
           setState(() {
             howFullNums.add(0);
+            currentMeasureNum++;
           });
         };
       }
@@ -345,7 +343,11 @@ class _FirstPageWidgetState extends State<FirstPage> {
       if (isButtonEnabled) {
         return () {
           setState(() {
-            howFullNums.removeAt(howFullNums.length - 1);
+            currentListNums[currentMeasureNum - 1] = [];
+            boxRhythmNums[currentMeasureNum - 1] = [];
+            vibrateRhythmNums[currentMeasureNum - 1] = [250];
+            howFullNums.removeAt(currentMeasureNum - 1);
+            currentMeasureNum--;
           });
         };
       }
