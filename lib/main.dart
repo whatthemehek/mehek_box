@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audio_cache.dart';
@@ -9,13 +11,17 @@ void main() {
   runApp(MyApp());
 }
 
-final List<int> boxRhythm = [];
-final List<int> vibrateRhythm = [250];
-
-int _howFull = 0;
+final List<List<int>> boxRhythmNums = [[], [], [], [],];
+final List<List<int>> vibrateRhythmNums = [[250], [250], [250], [250]];
 
 
-//final n = 3.0; // Scale factor for scroll blocks
+final List<int> howFullNums = [0];
+
+var currentListNums = [[], [], [], []];
+var isAccessible = false;
+
+
+
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -26,11 +32,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.white,
       ),
-      initialRoute: '/measurebox',
+      initialRoute: '/measure',
       routes: {
-        '/measurebox': (context) => FirstPage(boxData: measureData),
-        '/beatbox': (context) => FirstPage(boxData: beatData),
-        '/threefourbox': (context) => FirstPage(boxData: threeFourData),
+        '/measure': (context) => FirstPage(boxData: measureData),
+        '/beat': (context) => FirstPage(boxData: beatData),
+        '/threeFour': (context) => FirstPage(boxData: threeFourData),
         '/privacy': (context) => PrivacyPolicy(),
       },
     );
@@ -47,42 +53,53 @@ class BackgroundWidget extends StatefulWidget {
 
   }
 }
+
+
+List<bool> successfulDropNums = [null, null, null, null];
+
 class _BackgroundWidgetState extends State<BackgroundWidget> {
   final Data boxData;
   _BackgroundWidgetState({this.boxData});
   @override
-  bool successfulDrop;
+
   Widget build(BuildContext context) {
-    return DragTarget<int>(
-      builder: (BuildContext context, List<int> incoming, List rejected) {
-        if (successfulDrop == true) {
-          return MeasureBoxWidget(boxData: boxData);
-        } else {
-          return MeasureBoxWidget(boxData: boxData);
-        }
-      },
+    return Row (
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          for (int i = 0; i < howFullNums.length; i++)
+            Center (
+              child: DragTarget<int>
+                (builder: (BuildContext context, List<int> incoming, List rejected) {
+                if (successfulDropNums[i] == true) {
+                  return MeasureBoxWidget(boxData: boxData, measureNumber: 1 + i);
+                } else {
+                  return MeasureBoxWidget(boxData: boxData, measureNumber: 1 + i);
+                }
+              },
 
-      onAccept: (data) {
-        setState(() {
-          successfulDrop = true;
-          _howFull = _howFull - boxData.listOfDurations[boxData.listOfColors.indexOf(_currentList[data])];
-          _currentList.removeAt(data);
-        });
-      },
-      onLeave: (data) {
+                  onAccept: (data) {
+                    setState(() {
+                      successfulDropNums[i] = true;
+                      howFullNums[i] = howFullNums[i] - boxData.listOfDurations[boxData.listOfNames.indexOf(currentListNums[i][data])];
+                      currentListNums[i].removeAt(data);
+                    });
+                  },
+                  onLeave: (data) {
 
-      },
-
+                  }),
+            )
+        ]
     );
   }
 }
 
 class MeasureBoxWidget extends StatefulWidget {
   final Data boxData;
-  MeasureBoxWidget({this.boxData});
+  final int measureNumber;
+  MeasureBoxWidget({this.boxData, this.measureNumber});
   @override
   //MeasureBoxWidget({Key key}) : super(key: key);
-  _MBWidgetState createState() => _MBWidgetState(boxData: boxData);
+  _MBWidgetState createState() => _MBWidgetState(boxData: boxData, measureNumber: measureNumber);
   Widget build(BuildContext context) {
 
   }
@@ -91,7 +108,7 @@ class MeasureBoxWidget extends StatefulWidget {
 
 final AudioCache player = new AudioCache(prefix: 'sounds/');
 
-void _vibrate() async {
+void _vibrate(List<int> vibrateRhythm, List<int> boxRhythm) async {
   if (await Vibration.hasVibrator() && await Vibration.hasCustomVibrationsSupport()) {
     vibrateRhythm.clear();
     int rest = 250;
@@ -106,7 +123,6 @@ void _vibrate() async {
       }
     }
     Vibration.vibrate(pattern: vibrateRhythm);
-    print(vibrateRhythm);
   }
 }
 
@@ -115,29 +131,30 @@ void _vibrate() async {
 
 class _MBWidgetState extends State<MeasureBoxWidget> {
   final Data boxData;
-  _MBWidgetState({this.boxData});
+  final int measureNumber;
+  _MBWidgetState({this.boxData, this.measureNumber});
   @override
   bool isButtonEnabled;
-  Function _enableButton() {
-    isButtonEnabled = (_howFull == boxData.maxFull);
+  Function _enablePlayButton() {
+    isButtonEnabled = (howFullNums[measureNumber - 1] == boxData.maxFull);
     if (isButtonEnabled) {
       return () {
-        boxRhythm.clear();
-        for (var l in _currentList) {
-          boxRhythm.addAll(boxData.rhythmArrays[boxData.listOfColors.indexOf(l)]);
+        boxRhythmNums[measureNumber - 1].clear();
+        for (var l in currentListNums[measureNumber - 1]) {
+          boxRhythmNums[measureNumber - 1].addAll(boxData.rhythmArrays[boxData.listOfNames.indexOf(l)]);
         }
         player.clearCache();
         List<String> loadAllArray = [];
-        for (int i = 0; i < boxRhythm.length; i++) {
-          loadAllArray.add('Index'+ (i + 1).toString() + 'Length' + boxRhythm[i].toString() + '.wav');
-          if (boxRhythm[i] != 0) {
-            i = i + boxRhythm[i] - 1;
+        for (int i = 0; i < boxRhythmNums[measureNumber - 1].length; i++) {
+          loadAllArray.add('Index'+ (i + 1).toString() + 'Length' + boxRhythmNums[measureNumber - 1][i].toString() + '.wav');
+          if (boxRhythmNums[measureNumber - 1][i] != 0) {
+            i = i + boxRhythmNums[measureNumber - 1][i] - 1;
           }
         }
         player.load('metronome.wav');
         player.loadAll(loadAllArray);
         player.play('metronome.wav');
-        _vibrate();
+        _vibrate(vibrateRhythmNums[measureNumber - 1], boxRhythmNums[measureNumber - 1]);
         for (String j in loadAllArray) {
           player.play(j);
         }
@@ -151,8 +168,8 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
     return () {
       setState(() {
         isAccessible = true;
-        _currentList.removeAt(indexCurrentList);
-        _howFull -= boxData.listOfDurations[indexData];
+        currentListNums[measureNumber - 1].removeAt(indexCurrentList);
+        howFullNums[measureNumber - 1] -= boxData.listOfDurations[indexData];
       });
     };
   }
@@ -186,15 +203,15 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
                             child: Center(
                                 child: Row(
                                   children: [
-                                    for (int i = 0; i < _currentList.length; i++)
+                                    for (int i = 0; i < currentListNums[measureNumber - 1].length; i++)
                                       Container (
-                                          width: boxData.listOfWidths[boxData.listOfColors.indexOf(_currentList[i])]*n,
+                                          width: boxData.listOfWidths[boxData.listOfNames.indexOf(currentListNums[measureNumber - 1][i])]*n,
                                           height:(boxData.boxHeight - 4)*n,
                                           child: RawMaterialButton(
-                                            onPressed: _removeRhythm(i, boxData.listOfColors.indexOf(_currentList[i])),
+                                            onPressed: _removeRhythm(i, boxData.listOfNames.indexOf(currentListNums[measureNumber - 1][i])),
                                             padding: EdgeInsets.all(0),
-                                            child: Tooltip(message: boxData.listOfNames[boxData.listOfColors.indexOf(_currentList[i])],
-                                                child: boxData.listOfContainers[boxData.listOfColors.indexOf(_currentList[i])]),
+                                            child: Tooltip(message: currentListNums[measureNumber - 1][i],
+                                                child: boxData.listOfContainers[boxData.listOfNames.indexOf(currentListNums[measureNumber - 1][i])]),
                                           )
                                       )
                                   ],
@@ -204,13 +221,12 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
                     )
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 20.0),
                   child: IconButton(
                     iconSize: 80.0,
                     icon: Icon(Icons.play_circle_filled),
                     color: Colors.blue,
                     disabledColor: Colors.grey,
-                    onPressed: _enableButton(),
+                    onPressed: _enablePlayButton(),
                     tooltip: "Play Rhythm",
                   ),
                 )
@@ -218,8 +234,8 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
           )
       );
     } else {
-      return DragTarget<Color>(
-        builder: (BuildContext context, List<Color> incoming, List rejected) {
+      return DragTarget<String>(
+        builder: (BuildContext context, List<String> incoming, List rejected) {
           return Column (
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -246,14 +262,14 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
                             child: Center (
                                 child: Row(
                                   children: [
-                                    for (var i in _currentList)
+                                    for (var i in currentListNums[measureNumber - 1])
                                       Draggable(
-                                        child: boxData.listOfContainers[boxData.listOfColors.indexOf(i)],
+                                        child: boxData.listOfContainers[boxData.listOfNames.indexOf(i)],
                                         feedback: Material (
-                                          child: boxData.listOfContainers[boxData.listOfColors.indexOf(i)],
+                                          child: boxData.listOfContainers[boxData.listOfNames.indexOf(i)],
                                         ),
                                         childWhenDragging: null,
-                                        data: (_currentList.indexOf(i)),
+                                        data: (currentListNums[measureNumber - 1].indexOf(i)),
                                       ),
                                   ],
                                 )
@@ -262,27 +278,29 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
                     )
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 20.0),
                   child: IconButton (
                     iconSize: 80.0,
                     icon: Icon(Icons.play_circle_filled),
                     color: Colors.blue,
                     disabledColor: Colors.grey,
-                    onPressed: _enableButton(),
-                    tooltip: "Play Rhythm",
+                    onPressed: _enablePlayButton(),
+                    tooltip: "Kansas",
                   ),
                 )
               ]
           );
         },
 
-        onWillAccept: (data) => boxData.listOfDurations[boxData.listOfColors.indexOf(data)] + _howFull <= boxData.maxFull,
+        onWillAccept: (data) => boxData.listOfDurations[boxData.listOfNames.indexOf(data)] + howFullNums[measureNumber - 1] <= boxData.maxFull,
 
         onAccept: (data) {
           setState(() {
             isAccessible = false;
-            _howFull = boxData.listOfDurations[boxData.listOfColors.indexOf(data)] + _howFull;
-            _currentList.add(data);
+            print(data);
+            print(boxData.listOfNames.indexOf(data));
+            print(boxData.listOfDurations[boxData.listOfNames.indexOf(data)]);
+            howFullNums[measureNumber - 1] = boxData.listOfDurations[boxData.listOfNames.indexOf(data)] + howFullNums[measureNumber - 1];
+            currentListNums[measureNumber - 1].add(data);
           });
         },
         onLeave: (data) {
@@ -295,29 +313,47 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
 }
 
 //Compose Page
-var _currentList = [];
-var isAccessible = false;
 
 class _FirstPageWidgetState extends State<FirstPage> {
   final Data boxData;
   _FirstPageWidgetState({this.boxData});
   @override
   Widget build(BuildContext context) {
-    Function _addRhythm(int index, Data boxData) {
+    Function _addRhythm(int index, Data boxData, int measureNumber) {
       return () {
         setState(() {
           isAccessible = true;
-          if (boxData.listOfDurations[index] + _howFull <= boxData.maxFull) {
-            _currentList.add(boxData.listOfColors[index]);
-            _howFull += boxData.listOfDurations[index];
+          if (boxData.listOfDurations[index] + howFullNums[measureNumber - 1] <= boxData.maxFull) {
+            currentListNums[measureNumber - 1].add(boxData.listOfNames[index]);
+            howFullNums[measureNumber - 1] += boxData.listOfDurations[index];
           }
         });
       };
     }
+    Function _enableAddMeasure() {
+      bool isButtonEnabled = (howFullNums.length < 4) && !isAccessible;
+      if (isButtonEnabled) {
+        return () {
+          setState(() {
+            howFullNums.add(0);
+          });
+        };
+      }
+    }
+    Function _enableRemoveMeasure() {
+      bool isButtonEnabled = (howFullNums.length > 1) && !isAccessible;
+      if (isButtonEnabled) {
+        return () {
+          setState(() {
+            howFullNums.removeAt(howFullNums.length - 1);
+          });
+        };
+      }
+    }
     if (isAccessible) {
       return Scaffold(
         appBar: AppBar(
-          title: Text(boxData.boxType+' Box'),
+          title: Text(boxData.boxType + "Box"),
         ),
         body: Column (
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -334,7 +370,7 @@ class _FirstPageWidgetState extends State<FirstPage> {
                             height:(boxData.boxHeight - 4)*n,
                             child: RawMaterialButton(
                               padding: EdgeInsets.all(0),
-                              onPressed: _addRhythm(boxData.listOfContainers.indexOf(index), boxData),
+                              onPressed: _addRhythm(boxData.listOfContainers.indexOf(index), boxData, 1),
                               child: Tooltip(message: boxData.listOfNames[boxData.listOfContainers.indexOf(index)],
                                   child: index),
                             ),
@@ -345,7 +381,7 @@ class _FirstPageWidgetState extends State<FirstPage> {
               Expanded(
                   child: Container(
                     color: Color(0xffe4e1),
-                    child: MeasureBoxWidget(boxData: boxData),
+                    child: MeasureBoxWidget(boxData: boxData, measureNumber: 1),
                   )
               ),
             ]// Children
@@ -361,30 +397,26 @@ class _FirstPageWidgetState extends State<FirstPage> {
                 ),
               ),
               ListTile(
-                title: Text('Measure Box (4/4)'),
+                title: Text('Measure Box'),
                 onTap: () {
-                  boxRhythm.clear();
-                  Navigator.pushNamed(context, '/measurebox');
+                  Navigator.pushNamed(context, '/measure');
                 },
               ),
               ListTile(
-                title: Text('Beat Box (Single Quarter Length)'),
+                title: Text('Beat Box'),
                 onTap: () {
-                  boxRhythm.clear();
-                  Navigator.pushNamed(context, '/beatbox');
+                  Navigator.pushNamed(context, '/beat');
                 },
               ),
               ListTile(
                 title: Text('3/4 Box'),
                 onTap: () {
-                  boxRhythm.clear();
-                  Navigator.pushNamed(context, '/threefourbox');
+                  Navigator.pushNamed(context, '/threeFour');
                 },
               ),
               ListTile(
                 title: Text('Privacy Policy'),
                 onTap: () {
-                  boxRhythm.clear();
                   Navigator.pushNamed(context, '/privacy');
                 },
               ),
@@ -404,7 +436,7 @@ class _FirstPageWidgetState extends State<FirstPage> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: Text(boxData.boxType+' Box'),
+          title: Text(boxData.boxType + " Box"),
         ),
         body: Column (
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -416,18 +448,40 @@ class _FirstPageWidgetState extends State<FirstPage> {
                       scrollDirection: Axis.horizontal,
                       children: [
                         for (var index in boxData.listOfContainers)
-                          Draggable<Color>(
+                          Draggable<String>(
                             child: index,
                             feedback: Material(
                               child: index,
                             ),
                             childWhenDragging: index,
-                            data: boxData.listOfColors[boxData.listOfContainers.indexOf(index)],
+                            data: boxData.listOfNames[boxData.listOfContainers.indexOf(index)],
                             affinity: Axis.vertical,
                           )
                       ]
                   )
               ),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    IconButton(
+                      iconSize: 80.0,
+                      icon: Icon(Icons.add_circle_sharp),
+                      color: Colors.red,
+                      disabledColor: Colors.grey,
+                      onPressed: _enableAddMeasure(),
+                      tooltip: "Add Measure",
+                    ),
+                    IconButton(
+                      iconSize: 80.0,
+                      icon: Icon(Icons.remove_circle),
+                      color: Colors.red,
+                      disabledColor: Colors.grey,
+                      onPressed: _enableRemoveMeasure(),
+                      tooltip: "Remove Measure",
+                    ),
+                  ]
+              ),
+
               Expanded(
                   child: Container(
                     color: Color(0xffe4e1),
@@ -447,30 +501,26 @@ class _FirstPageWidgetState extends State<FirstPage> {
                 ),
               ),
               ListTile(
-                title: Text('Measure Box (4/4)'),
+                title: Text('Measure Box'),
                 onTap: () {
-                  boxRhythm.clear();
-                  Navigator.pushNamed(context, '/measurebox');
+                  Navigator.pushNamed(context, '/measure');
                 },
               ),
               ListTile(
-                title: Text('Beat Box (Single Quarter Length)'),
+                title: Text('Beat Box'),
                 onTap: () {
-                  boxRhythm.clear();
-                  Navigator.pushNamed(context, '/beatbox');
+                  Navigator.pushNamed(context, '/beat');
                 },
               ),
               ListTile(
                 title: Text('3/4 Box'),
                 onTap: () {
-                  boxRhythm.clear();
-                  Navigator.pushNamed(context, '/threefourbox');
+                  Navigator.pushNamed(context, '/threeFour');
                 },
               ),
               ListTile(
                 title: Text('Privacy Policy'),
                 onTap: () {
-                  boxRhythm.clear();
                   Navigator.pushNamed(context, '/privacy');
                 },
               ),
@@ -522,30 +572,26 @@ class PrivacyPolicy extends StatelessWidget{
               ),
             ),
             ListTile(
-              title: Text('Measure Box (4/4)'),
+              title: Text('Measure Box'),
               onTap: () {
-                boxRhythm.clear();
-                Navigator.pushNamed(context, '/measurebox');
+                Navigator.pushNamed(context, '/measure');
               },
             ),
             ListTile(
-              title: Text('Beat Box (Single Quarter Length)'),
+              title: Text('Beat Box'),
               onTap: () {
-                boxRhythm.clear();
-                Navigator.pushNamed(context, '/beatbox');
+                Navigator.pushNamed(context, '/beat');
               },
             ),
             ListTile(
               title: Text('3/4 Box'),
               onTap: () {
-                boxRhythm.clear();
-                Navigator.pushNamed(context, '/threefourbox');
+                Navigator.pushNamed(context, '/threeFour');
               },
             ),
             ListTile(
               title: Text('Privacy Policy'),
               onTap: () {
-                boxRhythm.clear();
                 Navigator.pushNamed(context, '/privacy');
               },
             ),

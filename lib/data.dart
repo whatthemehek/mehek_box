@@ -31,29 +31,41 @@ final measureData = Data(listOfColors: measureListOfColors, listOfDarkColors: me
     listOfContainers: measureListOfContainers, boxHeight: measureBoxHeight, boxWidth: measureBoxWidth,
     maxFull: measureMaxFull);
 
-final measureListOfColors = [Colors.red, Colors.orange, Colors.yellow, Colors.green, Colors.blue,
-  Colors.brown, Colors.deepOrange[800], Colors.amber[600],
+final measureListOfColors = [Colors.red, Colors.black, Colors.orange, Colors.black,
+  Colors.yellow, Colors.black, Colors.green, Colors.black,
+  Colors.blue, Colors.black, Colors.brown, Colors.black,
+  Colors.deepOrange[800], Colors.black, Colors.amber[600], Colors.black,
   Colors.purple, Colors.grey, Colors.pink, Colors.tealAccent[100],
-  Colors.lightGreenAccent[100], Colors.lightGreenAccent[400], Colors.indigo,
-  Colors.black];
-final measureListOfDarkColors = [Colors.red[900], Colors.orange[900], Colors.yellow[900], Colors.green[900], Colors.blue[900],
-  Colors.brown[900], Colors.red[900], Colors.amber[900],
+  Colors.lightGreenAccent[100], Colors.lightGreenAccent[400], Colors.indigo];
+final measureListOfDarkColors = [Colors.red[900], Colors.white, Colors.orange[900], Colors.white,
+  Colors.yellow[900], Colors.white, Colors.green[900], Colors.white,
+  Colors.blue[900], Colors.white, Colors.brown[900], Colors.white,
+  Colors.red[900], Colors.white, Colors.amber[900], Colors.white,
   Colors.purple[900], Colors.grey[800], Colors.pink[900], Colors.tealAccent[400],
-  Colors.lightGreenAccent[700], Colors.lightGreen[700], Colors.indigo[900],
-  Colors.white];
-final measureListOfWidths = [96, 72, 48, 36, 24, 18, 12, 6, 24, 24, 24, 24, 24, 24, 24, 24];
-final measureListOfDurations = [16, 12, 8, 6, 4, 3, 2, 1, 4, 4, 4, 4, 4, 4, 4, 4];
-final measureListOfNames = ['whole', 'dotHalf', 'half', 'dotQuarter', 'quarter',
-  'dotEighth', 'eighth', 'sixteenth',
-  'oneEAndA', 'oneAnd', 'oneAndA', 'oneEAnd', 'eAndA', 'oneEA', 'oneA', 'quarterRest'];
+  Colors.lightGreenAccent[700], Colors.lightGreen[700], Colors.indigo[900]];
+final measureListOfWidths = [96, 96, 72, 72, 48, 48, 36, 36, 24, 24, 18, 18, 12, 12, 6, 6, 24, 24, 24, 24, 24, 24, 24];
+final measureListOfDurations = [16, 16, 12, 12, 8, 8, 6, 6, 4, 4, 3, 3, 2, 2, 1, 1, 4, 4, 4, 4, 4, 4, 4];
+final measureListOfNames = ['whole', 'wholeRest','dotHalf', 'dotHalfRest',
+  'half', 'halfRest', 'dotQuarter', 'dotQuarterRest',
+  'quarter', 'quarterRest', 'dotEighth', 'dotEighthRest',
+  'eighth', 'eighthRest', 'sixteenth', 'sixteenthRest',
+  'oneEAndA', 'oneAnd', 'oneAndA', 'oneEAnd', 'eAndA', 'oneEA', 'oneA'];
 final measureRhythmArrays = [[16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16], //1: Whole
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // Whole Rest
   [12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12], //2: Dot Half
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // Dot Half Rest
   [8, 8, 8, 8, 8, 8, 8, 8], //3: Half
+  [0, 0, 0, 0, 0, 0, 0, 0], //Half Rest
   [6, 6, 6, 6, 6, 6], //4: Dot Quarter
+  [0, 0, 0, 0, 0, 0], //Dot Quarter Rest
   [4, 4, 4, 4], //5: Quarter
+  [0, 0, 0, 0], //16: Quarter Rest
   [3, 3, 3], //6: Dot Eighth
+  [0, 0, 0], //Dot Eighth Rest
   [2, 2], //7: Eighth
+  [0, 0], // Eighth Rest
   [1], //8: Sixteenth
+  [0], // Sixteenth Rest
   [1, 1, 1, 1], //9: One E And A
   [2, 2, 2, 2], //10: One And
   [2, 2, 1, 1], //11: One And A
@@ -61,10 +73,9 @@ final measureRhythmArrays = [[16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16
   [0, 1, 1, 1], //13: E And A
   [1, 2, 2, 1], //14: One E A
   [3, 3, 3, 1], //15: One A
-  [0, 0, 0, 0], //16: Quarter Rest
 ];
-final measureLabelArray = ['w', 'd', 'h', 'j', ' q', 'i', 'e', 's', 'y', 'n', 'm', 'M', 'S³', '¾', 'o', 'Q'];
-final measureListOfScales = [4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 5.0];
+final measureLabelArray = ['w', 'W', 'd', 'D', 'h', 'H', 'j', 'J', ' q', 'Q', 'i', 'I', 'e', 'E', 's', 'S', 'y', 'n', 'm', 'M', 'S³', '¾', 'o', 'Q'];
+final measureListOfScales = [4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 5.0];
 final measureListOfContainers = [
   for (var j in measureListOfNames)
     Container(
@@ -102,21 +113,28 @@ final beatData = Data(listOfColors: beatListOfColors, listOfDarkColors: beatList
     listOfContainers: beatListOfContainers, boxHeight: beatBoxHeight, boxWidth: beatBoxWidth,
     maxFull: beatMaxFull);
 
-final beatListOfColors = [Colors.blue, Colors.brown, Colors.deepOrange[800], Colors.amber[600],
+final beatListOfColors = [Colors.blue, Colors.black, Colors.brown, Colors.black,
+  Colors.deepOrange[800], Colors.black, Colors.amber[600], Colors.black,
   Colors.purple, Colors.grey, Colors.pink, Colors.tealAccent[100],
-  Colors.lightGreenAccent[100], Colors.lightGreenAccent[400], Colors.indigo, Colors.black];
+  Colors.lightGreenAccent[100], Colors.lightGreenAccent[400], Colors.indigo];
 
-final beatListOfDarkColors = [Colors.blue[900], Colors.brown[900], Colors.red[900], Colors.amber[900],
+final beatListOfDarkColors = [Colors.blue[900], Colors.white, Colors.brown[900], Colors.white,
+  Colors.red[900], Colors.white, Colors.amber[900], Colors.white,
   Colors.purple[900], Colors.grey[800], Colors.pink[900], Colors.tealAccent[400],
-  Colors.lightGreenAccent[700], Colors.lightGreen[700], Colors.indigo[900], Colors.white];
-final beatListOfWidths = [80, 60, 40, 20, 80, 80, 80, 80, 80, 80, 80, 80];
-final beatListOfDurations = [4, 3, 2, 1, 4, 4, 4, 4, 4, 4, 4, 4];
-final beatListOfNames = ['quarter', 'dotEighth', 'eighth', 'sixteenth',
-  'oneEAndA', 'oneAnd', 'oneAndA', 'oneEAnd', 'eAndA', 'oneEA', 'oneA', 'quarterRest'];
+  Colors.lightGreenAccent[700], Colors.lightGreen[700], Colors.indigo[900]];
+final beatListOfWidths = [80, 80, 60, 60, 40, 40, 20, 20, 80, 80, 80, 80, 80, 80, 80, 80];
+final beatListOfDurations = [4, 4, 3, 3, 2, 2, 1, 1, 4, 4, 4, 4, 4, 4, 4];
+final beatListOfNames = ['quarter', 'quarterRest', 'dotEighth', 'dotEighthRest',
+  'eighth', 'eighthRest', 'sixteenth', 'sixteenthRest',
+  'oneEAndA', 'oneAnd', 'oneAndA', 'oneEAnd', 'eAndA', 'oneEA', 'oneA'];
 final beatRhythmArrays = [[4, 4, 4, 4], //1: Quarter
+  [0, 0, 0, 0], // Quarter Rest
   [3, 3, 3], //2: Dot Eighth
+  [0, 0, 0],// Dot Eighth Rest
   [2, 2], //3: Eighth
+  [0, 0], // Eighth
   [1], //4: Sixteenth
+  [0], //Sixteenth Rest
   [1, 1, 1, 1], //5: One E And A
   [2, 2, 2, 2], //6: One And
   [2, 2, 1, 1], //7: One And A
@@ -124,10 +142,9 @@ final beatRhythmArrays = [[4, 4, 4, 4], //1: Quarter
   [0, 1, 1, 1], //9: E And A
   [1, 2, 2, 1], //10: One E A
   [3, 3, 3, 1], //11: One A
-  [0, 0, 0, 0], //12: Quarter Rest
 ];
-final beatLabelArray = [' q', 'i', 'e', 's', 'y', 'n', 'm', 'M', 'S³', '¾', 'o', 'Q'];
-final beatListOfScales = [4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 5.0];
+final beatLabelArray = [' q', 'Q','i','I', 'e','E', 's','S', 'y', 'n', 'm', 'M', 'S³', '¾', 'o'];
+final beatListOfScales = [4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0];
 final beatListOfContainers = [
   for (var j in beatListOfNames)
     Container(
@@ -161,32 +178,43 @@ final beatMaxFull = 4;
 /*--------------------------------ThreeFour Data-----------------------------------*/
 final threeFourData = Data(listOfColors: threeFourListOfColors, listOfDarkColors: threeFourListOfDarkColors, listOfWidths: threeFourListOfWidths,
     listOfDurations: threeFourListOfDurations, listOfNames: threeFourListOfNames, rhythmArrays: threeFourRhythmArrays,
-    labelArray: threeFourLabelArray, listOfScales: threeFourListOfScales, boxType: '3/4',
+    labelArray: threeFourLabelArray, listOfScales: threeFourListOfScales, boxType: 'Measure',
     listOfContainers: threeFourListOfContainers, boxHeight: threeFourBoxHeight, boxWidth: threeFourBoxWidth,
     maxFull: threeFourMaxFull);
 
-final threeFourListOfColors = [Colors.orange, Colors.yellow, Colors.green, Colors.blue,
-  Colors.brown, Colors.deepOrange[800], Colors.amber[600],
+final threeFourListOfColors = [Colors.orange, Colors.black,
+  Colors.yellow, Colors.black, Colors.green, Colors.black,
+  Colors.blue, Colors.black, Colors.brown, Colors.black,
+  Colors.deepOrange[800], Colors.black, Colors.amber[600], Colors.black,
   Colors.purple, Colors.grey, Colors.pink, Colors.tealAccent[100],
-  Colors.lightGreenAccent[100], Colors.lightGreenAccent[400], Colors.indigo,
-  Colors.black];
-final threeFourListOfDarkColors = [Colors.orange[900], Colors.yellow[900], Colors.green[900], Colors.blue[900],
-  Colors.brown[900], Colors.red[900], Colors.amber[900],
+  Colors.lightGreenAccent[100], Colors.lightGreenAccent[400], Colors.indigo];
+final threeFourListOfDarkColors = [Colors.orange[900], Colors.white,
+  Colors.yellow[900], Colors.white, Colors.green[900], Colors.white,
+  Colors.blue[900], Colors.white, Colors.brown[900], Colors.white,
+  Colors.red[900], Colors.white, Colors.amber[900], Colors.white,
   Colors.purple[900], Colors.grey[800], Colors.pink[900], Colors.tealAccent[400],
-  Colors.lightGreenAccent[700], Colors.lightGreen[700], Colors.indigo[900],
-  Colors.white];
-final threeFourListOfWidths = [72, 48, 36, 24, 18, 12, 6, 24, 24, 24, 24, 24, 24, 24, 24];
-final threeFourListOfDurations = [12, 8, 6, 4, 3, 2, 1, 4, 4, 4, 4, 4, 4, 4, 4];
-final threeFourListOfNames = ['dotHalf', 'half', 'dotQuarter', 'quarter',
-  'dotEighth', 'eighth', 'sixteenth',
-  'oneEAndA', 'oneAnd', 'oneAndA', 'oneEAnd', 'eAndA', 'oneEA', 'oneA', 'quarterRest'];
+  Colors.lightGreenAccent[700], Colors.lightGreen[700], Colors.indigo[900]];
+final threeFourListOfWidths = [72, 72, 48, 48, 36, 36, 24, 24, 18, 18, 12, 12, 6, 6, 24, 24, 24, 24, 24, 24, 24];
+final threeFourListOfDurations = [12, 12, 8, 8, 6, 6, 4, 4, 3, 3, 2, 2, 1, 1, 4, 4, 4, 4, 4, 4, 4];
+final threeFourListOfNames = ['dotHalf', 'dotHalfRest',
+  'half', 'halfRest', 'dotQuarter', 'dotQuarterRest',
+  'quarter', 'quarterRest', 'dotEighth', 'dotEighthRest',
+  'eighth', 'eighthRest', 'sixteenth', 'sixteenthRest',
+  'oneEAndA', 'oneAnd', 'oneAndA', 'oneEAnd', 'eAndA', 'oneEA', 'oneA'];
 final threeFourRhythmArrays = [[12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12], //2: Dot Half
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // Dot Half Rest
   [8, 8, 8, 8, 8, 8, 8, 8], //3: Half
+  [0, 0, 0, 0, 0, 0, 0, 0], //Half Rest
   [6, 6, 6, 6, 6, 6], //4: Dot Quarter
+  [0, 0, 0, 0, 0, 0], //Dot Quarter Rest
   [4, 4, 4, 4], //5: Quarter
+  [0, 0, 0, 0], //16: Quarter Rest
   [3, 3, 3], //6: Dot Eighth
+  [0, 0, 0], //Dot Eighth Rest
   [2, 2], //7: Eighth
+  [0, 0], // Eighth Rest
   [1], //8: Sixteenth
+  [0], // Sixteenth Rest
   [1, 1, 1, 1], //9: One E And A
   [2, 2, 2, 2], //10: One And
   [2, 2, 1, 1], //11: One And A
@@ -194,10 +222,9 @@ final threeFourRhythmArrays = [[12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12],
   [0, 1, 1, 1], //13: E And A
   [1, 2, 2, 1], //14: One E A
   [3, 3, 3, 1], //15: One A
-  [0, 0, 0, 0], //16: Quarter Rest
 ];
-final threeFourLabelArray = ['d', 'h', 'j', ' q', 'i', 'e', 's', 'y', 'n', 'm', 'M', 'S³', '¾', 'o', 'Q'];
-final threeFourListOfScales = [4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 5.0];
+final threeFourLabelArray = ['d', 'D', 'h', 'H', 'j', 'J', ' q', 'Q', 'i', 'I', 'e', 'E', 's', 'S', 'y', 'n', 'm', 'M', 'S³', '¾', 'o', 'Q'];
+final threeFourListOfScales = [4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 5.0];
 final threeFourListOfContainers = [
   for (var j in threeFourListOfNames)
     Container(
