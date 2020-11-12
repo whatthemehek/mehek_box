@@ -12,10 +12,10 @@ part 'measure.dart';
 part 'firstpage.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MehekBox());
 }
 
-class MyApp extends StatelessWidget {
+class MehekBox extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

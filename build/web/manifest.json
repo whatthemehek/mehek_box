@@ -1,11 +1,11 @@
 {
-    "name": "tutorialflutterapp",
-    "short_name": "tutorialflutterapp",
+    "name": "Mehek Box",
+    "short_name": "Mehek Box",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Learn more about the Mehek Box, an innovative rhythm education tool! Drag and drop rhythms into the measure box to hear them counted out to a metronome! On mobile, you can also feel them vibrated out, and you can compose in up to four measures at a time, with multiple measure sizes available. The site can also be screenreader-optimized, and allows users to click rather than drag-and-drop rhythms.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

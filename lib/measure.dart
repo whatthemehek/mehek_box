@@ -34,7 +34,7 @@ void _vibrate(List<int> vibrateRhythm, List<int> boxRhythm) async {
 }
 
 
-
+String _canPlay = 'Measure not full: Fill to play';
 
 class _MBWidgetState extends State<MeasureBoxWidget> {
   final Data boxData;
@@ -45,6 +45,7 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
   Function _enablePlayButton() {
     isButtonEnabled = (howFullNums[measureNumber - 1] == boxData.maxFull);
     if (isButtonEnabled) {
+      _canPlay = 'Measure is full: Can Play';
       return () {
         boxRhythmNums[measureNumber - 1].clear();
         for (var l in currentListNums[measureNumber - 1]) {
@@ -67,6 +68,7 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
         }
       };
     } else {
+      _canPlay = 'Measure not full: Fill to play';
       return null;
     }
   }
@@ -127,16 +129,18 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
                     )
                 ),
                 Container(
-                  child: IconButton(
-                    iconSize: 80.0,
-                    icon: Icon(Icons.play_circle_filled),
-                    color: Colors.blue,
-                    disabledColor: Colors.grey,
-                    onPressed: _enablePlayButton(),
-                    tooltip: "Play Rhythm",
-                  ),
-                )
-              ]
+                  child: Semantics(
+                    label: 'Play Button',
+                    value: _canPlay,
+                    child: IconButton(
+                      iconSize: 80.0,
+                      icon: Icon(Icons.play_circle_filled),
+                      color: Colors.blue,
+                      disabledColor: Colors.grey,
+                      onPressed: _enablePlayButton(),
+                    ),
+                  )
+                )]
           )
       );
     } else {
