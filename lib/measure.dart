@@ -3,9 +3,8 @@ part of 'main.dart';
 class MeasureBoxWidget extends StatefulWidget {
   final Data boxData;
   final int measureNumber;
-  MeasureBoxWidget({this.boxData, this.measureNumber});
+  MeasureBoxWidget({Key key, this.boxData, this.measureNumber}) : super(key: key);
   @override
-  //MeasureBoxWidget({Key key}) : super(key: key);
   _MBWidgetState createState() => _MBWidgetState(boxData: boxData, measureNumber: measureNumber);
   Widget build(BuildContext context) {
 
@@ -36,12 +35,22 @@ void _vibrate(List<int> vibrateRhythm, List<int> boxRhythm) async {
 
 String _canPlay = 'Measure not full: Fill to play';
 
-class _MBWidgetState extends State<MeasureBoxWidget> {
+class _MBWidgetState extends State<MeasureBoxWidget> with TickerProviderStateMixin{
   final Data boxData;
   final int measureNumber;
+  //final Duration duration;
   _MBWidgetState({this.boxData, this.measureNumber});
   @override
   bool isButtonEnabled;
+  AnimationController _controller;
+
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: Duration(milliseconds: 1000),
+      vsync: this,
+    );
+  }
   Function _enablePlayButton() {
     isButtonEnabled = (howFullNums[measureNumber - 1] == boxData.maxFull);
     if (isButtonEnabled) {
@@ -83,6 +92,8 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
     };
   }
 
+
+
   Widget build(BuildContext context) {
     if (isAccessible) {
       return Container(
@@ -90,43 +101,53 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
               children: [
                 Center(
                   //Draws the box, with the right size
-                    child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.grey,
-                            width: 1,
-                          ),
-                        ),
-                        child: Container(
-                            height: boxData.boxHeight * n,
-                            width: boxData.boxWidth * n,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+//                        SpinKitPulse(
+//                          color: Colors.black,
+//                          size: 300.0,
+//                          controller: _controller,
+//                        ),
+                        Container(
                             decoration: BoxDecoration(
-                              color: Color(0xc9c9c9),
                               border: Border.all(
-                                color: Colors.white,
-                                width: 2 * n,
+                                color: Colors.grey,
+                                width: 1,
                               ),
                             ),
-                            // Draws the blocks currently in the box
-                            child: Center(
-                                child: Row(
-                                  children: [
-                                    for (int i = 0; i < currentListNums[measureNumber - 1].length; i++)
-                                      Container (
-                                          width: boxData.listOfWidths[boxData.listOfNames.indexOf(currentListNums[measureNumber - 1][i])]*n,
-                                          height:(boxData.boxHeight - 4)*n,
-                                          child: RawMaterialButton(
-                                            onPressed: _removeRhythm(i, boxData.listOfNames.indexOf(currentListNums[measureNumber - 1][i])),
-                                            padding: EdgeInsets.all(0),
-                                            child: Tooltip(message: currentListNums[measureNumber - 1][i],
-                                                child: boxData.listOfContainers[boxData.listOfNames.indexOf(currentListNums[measureNumber - 1][i])]),
+                            child: Container(
+                                height: boxData.boxHeight * n,
+                                width: boxData.boxWidth * n,
+                                decoration: BoxDecoration(
+                                  color: Color(0xc9c9c9),
+                                  border: Border.all(
+                                    color: Colors.white,
+                                    width: 2 * n,
+                                  ),
+                                ),
+                                // Draws the blocks currently in the box
+                                child: Center(
+                                    child: Row(
+                                      children: [
+                                        for (int i = 0; i < currentListNums[measureNumber - 1].length; i++)
+                                          Container (
+                                              width: boxData.listOfWidths[boxData.listOfNames.indexOf(currentListNums[measureNumber - 1][i])]*n,
+                                              height:(boxData.boxHeight - 4)*n,
+                                              child: RawMaterialButton(
+                                                onPressed: _removeRhythm(i, boxData.listOfNames.indexOf(currentListNums[measureNumber - 1][i])),
+                                                padding: EdgeInsets.all(0),
+                                                child: Tooltip(message: currentListNums[measureNumber - 1][i],
+                                                    child: boxData.listOfContainers[boxData.listOfNames.indexOf(currentListNums[measureNumber - 1][i])]),
+                                              )
                                           )
-                                      )
-                                  ],
+                                      ],
+                                    )
                                 )
                             )
-                        )
-                    )
+                        ),
+                      ]
+                    ),
                 ),
                 Container(
                   child: Semantics(
@@ -148,44 +169,51 @@ class _MBWidgetState extends State<MeasureBoxWidget> {
         builder: (BuildContext context, List<String> incoming, List rejected) {
           return Column (
               children: [
-                Center (
-                  //Draws the box, with the right size
-                    child: Container (
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+//                    SpinKitPulse(
+//                      color: Colors.black,
+//                      size: 300.0,
+//                      controller: _controller,
+//                    ),
+                    Container (
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.grey,
+                          width: 1,
+                        ),
+                      ),
+                      child: Container (
+                        height: boxData.boxHeight*n,
+                        width: boxData.boxWidth*n,
                         decoration: BoxDecoration(
+                          color: Color(0xc9c9c9),
                           border: Border.all(
-                            color: Colors.grey,
-                            width: 1,
+                            color: Colors.white,
+                            width: 2*n,
                           ),
                         ),
-                        child: Container (
-                            height: boxData.boxHeight*n,
-                            width: boxData.boxWidth*n,
-                            decoration: BoxDecoration(
-                              color: Color(0xc9c9c9),
-                              border: Border.all(
-                                color: Colors.white,
-                                width: 2*n,
+                        child: Center ( // Draws the blocks currently in the box
+                          child: Row(
+                            children: [
+                              for (var i in currentListNums[measureNumber - 1])
+                              Draggable(
+                                child: boxData.listOfContainers[boxData.listOfNames.indexOf(i)],
+                                feedback: Material (
+                                  child: boxData.listOfContainers[boxData.listOfNames.indexOf(i)],
+                                ),
+                                childWhenDragging: null,
+                                data: ([currentListNums[measureNumber - 1].indexOf(i), measureNumber - 1]),
                               ),
-                            ),
-                            // Draws the blocks currently in the box
-                            child: Center (
-                                child: Row(
-                                  children: [
-                                    for (var i in currentListNums[measureNumber - 1])
-                                      Draggable(
-                                        child: boxData.listOfContainers[boxData.listOfNames.indexOf(i)],
-                                        feedback: Material (
-                                          child: boxData.listOfContainers[boxData.listOfNames.indexOf(i)],
-                                        ),
-                                        childWhenDragging: null,
-                                        data: ([currentListNums[measureNumber - 1].indexOf(i), measureNumber - 1]),
-                                      ),
-                                  ],
-                                )
-                            )
+                            ],
+                          )
                         )
+                      )
                     )
+                  ]
                 ),
+                  //Draws the box, with the right size
                 Container(
                   child: IconButton (
                     iconSize: 80.0,

@@ -33,16 +33,19 @@ class _BackgroundWidgetState extends State<BackgroundWidget> {
                       )
                   ]
               ),
-              Container (
-                height: 200,
-                width: MediaQuery.of(context).size.width,
-                color: Colors.blue,
-                child: Icon(
-                  Icons.delete_outline,
-                  color: Colors.white,
-                  size: 50.0,
-                ),
-              )
+//              Expanded(
+//                child:
+                Container (
+                  height: 200,
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.blue,
+                  child: Icon(
+                    Icons.delete_outline,
+                    color: Colors.white,
+                    size: 50.0,
+                  ),
+                )
+ //             )
             ]
         );
       },

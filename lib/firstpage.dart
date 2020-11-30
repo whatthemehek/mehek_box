@@ -78,7 +78,52 @@ class _FirstPageWidgetState extends State<FirstPage> {
               ),
             ]// Children
         ),
-        drawer: BoxDrawer(),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                child: Text('Menu'),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                ),
+              ),
+              ListTile(
+                title: Text('Measure Box'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/measure');
+                },
+              ),
+              ListTile(
+                title: Text('Beat Box'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/beat');
+                },
+              ),
+              ListTile(
+                title: Text('3/4 Box'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/threeFour');
+                },
+              ),
+              ListTile(
+                title: Text('Privacy Policy'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/privacy');
+                },
+              ),
+              SwitchListTile(
+                title: Text('Screen-reader Optimized'),
+                value: isAccessible,
+                onChanged: (bool value) {
+                  setState(() {
+                    isAccessible = value;
+                  });
+                },
+              ),
+            ],
+          ),
+        ),
       );
     } else {
       return Scaffold(
@@ -137,7 +182,52 @@ class _FirstPageWidgetState extends State<FirstPage> {
               ),
             ]// Children
         ),
-        drawer: BoxDrawer(),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                child: Text('Menu'),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                ),
+              ),
+              ListTile(
+                title: Text('Measure Box'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/measure');
+                },
+              ),
+              ListTile(
+                title: Text('Beat Box'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/beat');
+                },
+              ),
+              ListTile(
+                title: Text('3/4 Box'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/threeFour');
+                },
+              ),
+              ListTile(
+                title: Text('Privacy Policy'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/privacy');
+                },
+              ),
+              SwitchListTile(
+                title: Text('Screen-reader Optimized'),
+                value: isAccessible,
+                onChanged: (bool value) {
+                  setState(() {
+                    isAccessible = value;
+                  });
+                },
+              ),
+            ],
+          ),
+        ),
       );
     }
   }
