@@ -29,13 +29,12 @@ class _BackgroundWidgetState extends State<BackgroundWidget> {
                   children: [
                     for (int i = 0; i < howFullNums.length; i++)
                       Center (
-                        child: MeasureBoxWidget(boxData: boxData, measureNumber: 1 + i),
+                        child: MeasureBoxWidget(boxData: boxData, measureNumber: 1 + i, duration: 1000),
                       )
                   ]
               ),
-//              Expanded(
-//                child:
-                Container (
+              Expanded(
+                child: Container (
                   height: 200,
                   width: MediaQuery.of(context).size.width,
                   color: Colors.blue,
@@ -45,7 +44,7 @@ class _BackgroundWidgetState extends State<BackgroundWidget> {
                     size: 50.0,
                   ),
                 )
- //             )
+              )
             ]
         );
       },

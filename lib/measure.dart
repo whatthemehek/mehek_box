@@ -3,9 +3,10 @@ part of 'main.dart';
 class MeasureBoxWidget extends StatefulWidget {
   final Data boxData;
   final int measureNumber;
-  MeasureBoxWidget({Key key, this.boxData, this.measureNumber}) : super(key: key);
+  final int duration;
+  MeasureBoxWidget({Key key, this.boxData, this.measureNumber, this.duration}) : super(key: key);
   @override
-  _MBWidgetState createState() => _MBWidgetState(boxData: boxData, measureNumber: measureNumber);
+  _MBWidgetState createState() => _MBWidgetState(boxData: boxData, measureNumber: measureNumber, duration: duration);
   Widget build(BuildContext context) {
 
   }
@@ -35,35 +36,91 @@ void _vibrate(List<int> vibrateRhythm, List<int> boxRhythm) async {
 
 String _canPlay = 'Measure not full: Fill to play';
 
+
+
 class _MBWidgetState extends State<MeasureBoxWidget> with TickerProviderStateMixin{
   final Data boxData;
   final int measureNumber;
-  //final Duration duration;
-  _MBWidgetState({this.boxData, this.measureNumber});
+  final int duration;
+  _MBWidgetState({this.boxData, this.measureNumber, this.duration});
   @override
   bool isButtonEnabled;
-  AnimationController _controller;
+  Widget pulseUsing = Container();
 
+  int _duration;
+  AnimationController animationController;
+
+  @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      duration: Duration(milliseconds: 1000),
-      vsync: this,
+    _duration = widget.duration;
+    animationController = AnimationController(
+        duration: Duration(milliseconds: _duration),
+        vsync: this
     );
   }
+
+  @override
+  void didUpdateWidget(MeasureBoxWidget oldWidget) {
+    setState(() {
+      _duration = widget.duration;
+    });
+
+    updateController(oldWidget);
+    super.didUpdateWidget(oldWidget);
+  }
+
+
+  void updateController(MeasureBoxWidget oldWidget){
+    if(oldWidget.duration != _duration){
+      animationController.dispose();
+      animationController = AnimationController(duration: Duration(milliseconds: _duration), vsync:this);
+    }
+  }
+
+  Widget pulser(List<List<double>> pulseDurations, List<List<Color>> pulseColors) {
+        return Stack(
+          children: [
+            for (int i = 0; i < pulseColors[measureNumber - 1].length; i++)
+              SpinKitPulse(
+                color: pulseColors[measureNumber - 1][i],
+                size: 400.0,
+                intervalOne: pulseDurations[measureNumber - 1][i*2],
+                intervalTwo: pulseDurations[measureNumber - 1][i*2 + 1],
+                controller: AnimationController(
+                  vsync: this,
+                  duration: Duration(milliseconds: 4000),
+                ),
+              )
+          ],
+        );
+  }
+
   Function _enablePlayButton() {
     isButtonEnabled = (howFullNums[measureNumber - 1] == boxData.maxFull);
     if (isButtonEnabled) {
       _canPlay = 'Measure is full: Can Play';
       return () {
+        pulseDurations[measureNumber - 1].clear();
+        pulseColors[measureNumber - 1].clear();
+        rhythmColorLists[measureNumber - 1].clear();
         boxRhythmNums[measureNumber - 1].clear();
         for (var l in currentListNums[measureNumber - 1]) {
           boxRhythmNums[measureNumber - 1].addAll(boxData.rhythmArrays[boxData.listOfNames.indexOf(l)]);
+          for (int i = 0; i < boxData.rhythmArrays[boxData.listOfNames.indexOf(l)].length; i++) {
+            rhythmColorLists[measureNumber - 1].add(boxData.listOfColors[boxData.listOfNames.indexOf(l)]);
+          }
         }
         player.clearCache();
         List<String> loadAllArray = [];
+        double lastTime = 0.0;
         for (int i = 0; i < boxRhythmNums[measureNumber - 1].length; i++) {
           loadAllArray.add('Index'+ (i + 1).toString() + 'Length' + boxRhythmNums[measureNumber - 1][i].toString() + '.wav');
+          pulseDurations[measureNumber - 1].add(lastTime);
+          pulseDurations[measureNumber - 1].add(lastTime + boxRhythmNums[measureNumber - 1][i] / 16.0);
+          lastTime = lastTime + boxRhythmNums[measureNumber - 1][i] / 16.0;
+          print(pulseDurations);
+          pulseColors[measureNumber - 1].add(rhythmColorLists[measureNumber - 1][i]);
           if (boxRhythmNums[measureNumber - 1][i] != 0) {
             i = i + boxRhythmNums[measureNumber - 1][i] - 1;
           }
@@ -72,9 +129,19 @@ class _MBWidgetState extends State<MeasureBoxWidget> with TickerProviderStateMix
         player.loadAll(loadAllArray);
         player.play('metronome.wav');
         _vibrate(vibrateRhythmNums[measureNumber - 1], boxRhythmNums[measureNumber - 1]);
-        for (String j in loadAllArray) {
-          player.play(j);
-        }
+        setState(()  {
+          for (String j in loadAllArray) {
+            player.play(j);
+          }
+          setState(() {
+            pulseUsing = pulser(pulseDurations, pulseColors);
+          });
+          Future.delayed(Duration(milliseconds: 4000), () {
+            setState(() {
+                pulseUsing = Container();
+            });
+          });
+        });
       };
     } else {
       _canPlay = 'Measure not full: Fill to play';
@@ -104,11 +171,7 @@ class _MBWidgetState extends State<MeasureBoxWidget> with TickerProviderStateMix
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-//                        SpinKitPulse(
-//                          color: Colors.black,
-//                          size: 300.0,
-//                          controller: _controller,
-//                        ),
+                        pulseUsing,
                         Container(
                             decoration: BoxDecoration(
                               border: Border.all(
@@ -165,18 +228,13 @@ class _MBWidgetState extends State<MeasureBoxWidget> with TickerProviderStateMix
           )
       );
     } else {
-      return DragTarget<String>(
-        builder: (BuildContext context, List<String> incoming, List rejected) {
+      return DragTarget<String>(builder: (BuildContext context, List<String> incoming, List rejected) {
           return Column (
               children: [
                 Stack(
                   alignment: Alignment.center,
                   children: [
-//                    SpinKitPulse(
-//                      color: Colors.black,
-//                      size: 300.0,
-//                      controller: _controller,
-//                    ),
+                    pulseUsing,
                     Container (
                       decoration: BoxDecoration(
                         border: Border.all(
@@ -210,7 +268,8 @@ class _MBWidgetState extends State<MeasureBoxWidget> with TickerProviderStateMix
                           )
                         )
                       )
-                    )
+                    ),
+
                   ]
                 ),
                   //Draws the box, with the right size
