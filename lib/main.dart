@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:vibration/vibration.dart';
+import 'package:just_audio/just_audio.dart';
 
 part 'data.dart';
 part 'drawer.dart';
