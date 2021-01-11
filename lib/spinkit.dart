@@ -60,7 +60,7 @@ class _SpinKitPulseState extends State<SpinKitPulse> with SingleTickerProviderSt
       child: Opacity(
         opacity: 1.0 - _animation.value,
         child: Transform.scale(
-          scale: _animation.value,
+          scale: (_animation.value * 0.7) + 0.3,
           child: SizedBox.fromSize(
             size: Size.square(widget.size),
             child: _itemBuilder(0),
