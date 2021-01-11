@@ -12,8 +12,10 @@ class MeasureBoxWidget extends StatefulWidget {
   }
 }
 
+//String baseURL =
 
-final AudioCache player = new AudioCache(prefix: 'sounds/');
+final AudioCache player = new AudioCache(prefix: 'sounds_mp3/');
+
 
 void _vibrate(List<int> vibrateRhythm, List<int> boxRhythm) async {
   if (await Vibration.hasVibrator() && await Vibration.hasCustomVibrationsSupport()) {
@@ -96,6 +98,14 @@ class _MBWidgetState extends State<MeasureBoxWidget> with TickerProviderStateMix
         );
   }
 
+  String baseURL = "https://storage.googleapis.com/mehek_box_sounds/sounds_mp3/";
+
+  play(String path) async {
+    AudioPlayer audioPlayer = AudioPlayer();
+    await audioPlayer.setUrl(path);
+    int result = await audioPlayer.play(path);
+  }
+
   Function _enablePlayButton() {
     isButtonEnabled = (howFullNums[measureNumber - 1] == boxData.maxFull);
     if (isButtonEnabled) {
@@ -115,23 +125,24 @@ class _MBWidgetState extends State<MeasureBoxWidget> with TickerProviderStateMix
         List<String> loadAllArray = [];
         double lastTime = 0.0;
         for (int i = 0; i < boxRhythmNums[measureNumber - 1].length; i++) {
-          loadAllArray.add('Index'+ (i + 1).toString() + 'Length' + boxRhythmNums[measureNumber - 1][i].toString() + '.wav');
+          loadAllArray.add(baseURL + 'Index'+ (i + 1).toString() + 'Length' + boxRhythmNums[measureNumber - 1][i].toString() + '.mp3');
           pulseDurations[measureNumber - 1].add(lastTime);
           pulseDurations[measureNumber - 1].add(lastTime + boxRhythmNums[measureNumber - 1][i] / 16.0);
           lastTime = lastTime + boxRhythmNums[measureNumber - 1][i] / 16.0;
-          print(pulseDurations);
           pulseColors[measureNumber - 1].add(rhythmColorLists[measureNumber - 1][i]);
           if (boxRhythmNums[measureNumber - 1][i] != 0) {
             i = i + boxRhythmNums[measureNumber - 1][i] - 1;
           }
         }
-        player.load('metronome.wav');
-        player.loadAll(loadAllArray);
-        player.play('metronome.wav');
+//        player.load('metronome.mp3');
+//        player.loadAll(loadAllArray);
+//        player.play('metronome.mp3');
         _vibrate(vibrateRhythmNums[measureNumber - 1], boxRhythmNums[measureNumber - 1]);
         setState(()  {
+          play(baseURL + 'metronome.mp3');
           for (String j in loadAllArray) {
-            player.play(j);
+            //player.play(j);
+            play(j);
           }
           setState(() {
             pulseUsing = pulser(pulseDurations, pulseColors);
@@ -158,6 +169,9 @@ class _MBWidgetState extends State<MeasureBoxWidget> with TickerProviderStateMix
       });
     };
   }
+
+
+
 
 
 
